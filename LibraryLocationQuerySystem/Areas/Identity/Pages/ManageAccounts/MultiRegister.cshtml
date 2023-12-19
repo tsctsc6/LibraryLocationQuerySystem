@@ -1,0 +1,31 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@model LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts.MultiRegisterModel
+@{
+    ViewData["Title"] = "批量注册";
+}
+@attribute [Authorize(Roles = "admin")]
+
+<h1>@ViewData["Title"]</h1>
+
+<form enctype="multipart/form-data" method="post">
+    <dl>
+        <dt>
+            <label asp-for="FileUpload.FormFile"></label>
+        </dt>
+        <dd>
+            <input asp-for="FileUpload.FormFile" type="file" />
+            <span asp-validation-for="FileUpload.FormFile" class="text-danger"></span>
+        </dd>
+    </dl>
+    <button id="multiRegisterSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Upload</button>
+</form>
+
+<ui class="result">
+    @foreach (var item in Model.ResultMessages)
+    {
+        <li>
+            @item
+        </li>
+    }
+</ui>
