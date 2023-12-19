@@ -1,0 +1,44 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using LibraryLocationQuerySystem.Areas.Identity.Data;
+using LibraryLocationQuerySystem.Areas.Identity.Models;
+
+namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
+{
+	public class IndexModel : PageModel
+	{
+		private readonly StudentUserDbContext _context;
+
+		public IndexModel(StudentUserDbContext context)
+		{
+			_context = context;
+		}
+
+		public IList<StudentUser> StudentUsers { get; set; } = default!;
+
+		[BindProperty(SupportsGet = true)]
+		[RegularExpression(@"\d+")]
+		[StringLength(10)]
+		public string? SearchString { get; set; }
+
+		public async Task OnGetAsync()
+		{
+			var Role_admin = _context.Roles.Where(r => r.NormalizedName == "ADMIN").FirstOrDefault();
+			if (Role_admin == null) throw new ArgumentNullException("Null ADMIN");
+			var StudentUserIds_reader = _context.UserRoles.Where(ur => ur.RoleId == Role_admin.Id);
+
+			var StudentUsers1 = _context.Users.Except(
+				from u in _context.Users
+				join ur in StudentUserIds_reader on u.Id equals ur.UserId
+				select u);
+
+			if (!string.IsNullOrEmpty(SearchString))
+			{
+				StudentUsers1 = StudentUsers1.Where(s => s.StudentId.Contains(SearchString));
+			}
+			StudentUsers = await StudentUsers1.ToListAsync();
+		}
+	}
+}

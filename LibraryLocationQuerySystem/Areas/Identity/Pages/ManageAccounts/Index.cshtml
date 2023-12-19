@@ -1,0 +1,43 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@model LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts.IndexModel
+@{
+	ViewData["Title"] = "学生用户管理";
+}
+@attribute [Authorize(Roles = "admin")]
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+	<a asp-area="Identity" asp-page="/ManageAccounts/MultiRegister">批量注册</a>
+</p>
+
+<form>
+	<p>
+		学号搜索: <input type="text" asp-for="SearchString" />
+		<input type="submit" value="搜索" />
+	</p>
+</form>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				<p>学号</p>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.StudentUsers)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.StudentId)
+				</td>
+				<td>
+					<a asp-page="./ResetPassword" asp-route-StudentId="@item.StudentId">ResetPassword</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
