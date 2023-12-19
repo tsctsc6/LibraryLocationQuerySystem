@@ -1,18 +1,15 @@
-using Microsoft.AspNetCore.Identity.UI.Services;
+using LibraryLocationQuerySystem.Areas.Identity.Models;
+using LibraryLocationQuerySystem.Utilities;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using LibraryLocationQuerySystem.Areas.Identity.Models;
-using Microsoft.AspNetCore.Authentication;
-using System.ComponentModel.DataAnnotations;
-using LibraryLocationQuerySystem.Utilities;
 using OfficeOpenXml;
-using System.IO;
-using System.IO.Pipes;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
 {
-    public class MultiRegisterModel : PageModel
+	public class MultiRegisterModel : PageModel
     {
         private readonly SignInManager<StudentUser> _signInManager;
         private readonly UserManager<StudentUser> _userManager;
