@@ -35,7 +35,12 @@
 					@Html.DisplayFor(modelItem => item.StudentId)
 				</td>
 				<td>
-					<a asp-page="./ResetPassword" asp-route-StudentId="@item.StudentId">ResetPassword</a>
+					<form style="margin:0px; display:inline" class="form-inline" asp-area="Identity" asp-page="./ResetPassword" asp-route-StudentId="@item.StudentId" method="post">
+						<button type="submit">ResetPassword</button>
+					</form>
+					<form style="margin:0px; display:inline" class="form-inline" asp-area="Identity" asp-page="./ResetPassword" asp-route-StudentId="@item.StudentId" method="post">
+						<button type="submit">ResetPassword</button>
+					</form>
 				</td>
 			</tr>
 		}
