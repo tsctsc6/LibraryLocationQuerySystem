@@ -38,9 +38,7 @@
 					<form style="margin:0px; display:inline" class="form-inline" asp-area="Identity" asp-page="./ResetPassword" asp-route-StudentId="@item.StudentId" method="post">
 						<button type="submit">ResetPassword</button>
 					</form>
-					<form style="margin:0px; display:inline" class="form-inline" asp-area="Identity" asp-page="./ResetPassword" asp-route-StudentId="@item.StudentId" method="post">
-						<button type="submit">ResetPassword</button>
-					</form>
+					<a asp-area="Identity" asp-page="./Delete" asp-route-StudentId="@item.StudentId">Delete</a>
 				</td>
 			</tr>
 		}
