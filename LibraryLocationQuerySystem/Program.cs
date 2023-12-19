@@ -20,6 +20,9 @@ namespace LibraryLocationQuerySystem
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddRazorPages();
 
+            builder.Services.AddDbContext<StoreManagerDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
