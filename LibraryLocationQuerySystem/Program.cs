@@ -1,3 +1,5 @@
+using LibraryLocationQuerySystem.Areas.Identity.Data;
+using LibraryLocationQuerySystem.Areas.Identity.Models;
 using LibraryLocationQuerySystem.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,16 +14,21 @@ namespace LibraryLocationQuerySystem
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddDefaultIdentity<StudentUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+            }).AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<StudentUserDbContext>()
+            .AddSignInManager()
+            .AddDefaultTokenProviders();
             builder.Services.AddRazorPages();
 
             builder.Services.AddDbContext<StoreManagerDbContext>(options =>
                 options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<StudentUserDbContext>(options =>
+                options.UseSqlServer(connectionString));
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             var app = builder.Build();
 
