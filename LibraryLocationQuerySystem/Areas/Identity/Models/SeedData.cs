@@ -6,7 +6,7 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Models
 {
     public class SeedData
     {
-        public static async Task Initialize(IServiceProvider serviceProvider)
+        public static void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new StudentUserDbContext(
             serviceProvider.GetRequiredService<
