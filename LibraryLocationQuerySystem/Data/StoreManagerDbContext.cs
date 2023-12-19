@@ -1,0 +1,25 @@
+﻿using Microsoft.EntityFrameworkCore;
+using LibraryLocationQuerySystem.Models;
+
+namespace LibraryLocationQuerySystem.Data
+{
+    public class StoreManagerDbContext : DbContext
+    {
+        public StoreManagerDbContext(DbContextOptions<StoreManagerDbContext> options)
+            : base(options)
+        {
+        }
+        public DbSet<Book> Book { get; set; } = default!;
+        public DbSet<Location> Location { get; set; } = default!;
+        public DbSet<Store> Store { get; set; } = default!;
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Book>()
+                .HasMany(e => e.Locations)
+                .WithMany(e => e.Books)
+                .UsingEntity<Store>(
+                    l => l.HasOne<Location>().WithMany(e => e.Stores),
+                    r => r.HasOne<Book>().WithMany(e => e.Stores));
+        }
+    }
+}
