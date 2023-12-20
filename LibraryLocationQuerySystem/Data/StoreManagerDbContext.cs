@@ -17,7 +17,7 @@ namespace LibraryLocationQuerySystem.Data
             modelBuilder.Entity<Book>()
                 .HasMany(e => e.Locations)
                 .WithMany(e => e.Books)
-                .UsingEntity<Store>();
+                .UsingEntity<Store>(j => j.Property(e => e.StoreDate).HasDefaultValueSql("CURRENT_TIMESTAMP"));
         }
     }
 }
