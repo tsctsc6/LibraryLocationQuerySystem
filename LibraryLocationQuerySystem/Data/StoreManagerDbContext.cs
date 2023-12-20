@@ -17,9 +17,7 @@ namespace LibraryLocationQuerySystem.Data
             modelBuilder.Entity<Book>()
                 .HasMany(e => e.Locations)
                 .WithMany(e => e.Books)
-                .UsingEntity<Store>(
-                    l => l.HasOne<Location>().WithMany(e => e.Stores),
-                    r => r.HasOne<Book>().WithMany(e => e.Stores));
+                .UsingEntity<Store>();
         }
     }
 }
