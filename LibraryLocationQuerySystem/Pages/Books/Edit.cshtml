@@ -16,6 +16,16 @@
             <input type="hidden" asp-for="Book.SortCallNumber" />
             <input type="hidden" asp-for="Book.FormCallNumber" />
             <div class="form-group">
+                <label asp-for="Book.SortCallNumber" class="control-label"></label>
+                <input asp-for="Book.SortCallNumber" class="form-control" />
+                <span asp-validation-for="Book.SortCallNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.FormCallNumber" class="control-label"></label>
+                <input asp-for="Book.FormCallNumber" class="form-control" />
+                <span asp-validation-for="Book.FormCallNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Book.BookName" class="control-label"></label>
                 <input asp-for="Book.BookName" class="form-control" />
                 <span asp-validation-for="Book.BookName" class="text-danger"></span>

@@ -8,13 +8,13 @@ namespace LibraryLocationQuerySystem.Models
     public class Book
     {
         [StringLength(15)]
-        [RegularExpression(@"[0-9a-zA-Z-\.\(\)]")]
+        [RegularExpression(@"[0-9a-zA-Z-\.\(\)]+")]
         [Display(Name = "中图法分类号")]
         [Column(TypeName = "nchar(15)")]
         public string SortCallNumber { get; set; }
 
         [StringLength(15)]
-        [RegularExpression(@"[0-9a-zA-Z-\.\(\)]")]
+        [RegularExpression(@"[0-9a-zA-Z-\.\(\)]+")]
         [Display(Name = "书次号")]
         [Column(TypeName = "nchar(15)")]
         public string FormCallNumber { get; set; }

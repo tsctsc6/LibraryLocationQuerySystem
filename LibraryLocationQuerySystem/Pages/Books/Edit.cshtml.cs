@@ -43,6 +43,16 @@ namespace LibraryLocationQuerySystem.Pages.Books
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            foreach(var item in ModelState)
+            {
+                Console.WriteLine(item.Key);
+                foreach (var item2 in item.Value.Errors)
+                {
+                    Console.WriteLine(item2.ErrorMessage);
+                }
+            }
+            Console.WriteLine(Book.SortCallNumber);
+            Console.WriteLine(Book.FormCallNumber);
             if (!ModelState.IsValid)
             {
                 return Page();
