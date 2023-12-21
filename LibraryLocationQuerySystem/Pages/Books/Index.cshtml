@@ -13,6 +13,9 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+<p>
+    @Html.DisplayFor(model => model.pm.ResNum)个结果，@Html.DisplayFor(model => model.pm.StartIndex)~@Html.DisplayFor(model => model.pm.EndIndex)
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -70,3 +73,18 @@
     }
     </tbody>
 </table>
+<div>
+    @if (@Model.pm.PreviousPage != @Model.pm.CurrentPage)
+    {
+        <a asp-page="./Index" asp-route-pageNum="@Model.pm.PreviousPage">上一页</a>
+    }
+    <form style="margin:0px; display:inline" class="form-inline" asp-page="./Index" asp-route-pageNum="@Model.pm.JumpPage" method="get">
+        <input style="margin:0px; display:inline" class="form-control" />
+        <button type="submit">跳转</button>
+    </form>
+    @if (@Model.pm.PreviousPage != @Model.pm.CurrentPage)
+    {
+        <a asp-page="./Index" asp-route-pageNum="@Model.pm.NextPage">下一页</a>        
+    }
+</div>
+
