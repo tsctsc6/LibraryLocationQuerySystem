@@ -15,7 +15,12 @@ namespace LibraryLocationQuerySystem.Pages.Books
     public class IndexModel : PageModel
     {
         private readonly LibraryLocationQuerySystem.Data.StoreManagerDbContext _context;
+
         public PageManager pm { get; private set; }
+        [BindProperty(SupportsGet = true)]
+        [Range(0, int.MaxValue)]
+        public int pageNum { get; set; } = 0;
+
         public IndexModel(LibraryLocationQuerySystem.Data.StoreManagerDbContext context)
         {
             _context = context;
@@ -48,7 +53,7 @@ namespace LibraryLocationQuerySystem.Pages.Books
                     NextPage = pageNum;
                 }
                 CurrentPage = pageNum;
-                //JumpPage = pageNum;
+                JumpPage = pageNum;
                 PreviousPage = ((pageNum - 1) < 0) ? pageNum : pageNum - 1;
                 EndIndex = StartIndex + NumPerPage - 1;
             }
@@ -56,10 +61,11 @@ namespace LibraryLocationQuerySystem.Pages.Books
 
         public IList<Book> Book { get;set; } = default!;
 
-        public async Task OnGetAsync(int pageNum = 0)
+        public async Task OnGetAsync()
         {
+            if (pageNum < 0) pageNum = 0;
             if (_context.Book == null) return;
-            pm.Set(pageNum, await _context.Book.CountAsync());
+            pm.Set((int)pageNum, await _context.Book.CountAsync());
             Book = await _context.Book.Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
         }
     }

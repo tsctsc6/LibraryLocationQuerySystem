@@ -78,13 +78,13 @@
     {
         <a asp-page="./Index" asp-route-pageNum="@Model.pm.PreviousPage">上一页</a>
     }
-    <form style="margin:0px; display:inline" class="form-inline" asp-page="./Index" asp-route-pageNum="@Model.pm.JumpPage" method="get">
-        <input style="margin:0px; display:inline" class="form-control" />
-        <button type="submit">跳转</button>
+    <form style="margin:0px; display:inline" class="form-inline" method="get">
+            页码：<input type="number" asp-for="pageNum" />
+            <input type="submit" value="跳转" />
     </form>
     @if (@Model.pm.PreviousPage != @Model.pm.CurrentPage)
     {
-        <a asp-page="./Index" asp-route-pageNum="@Model.pm.NextPage">下一页</a>        
+        <a asp-page="./Index" asp-route-pageNum="@Model.pm.NextPage">下一页</a>
     }
 </div>
 
