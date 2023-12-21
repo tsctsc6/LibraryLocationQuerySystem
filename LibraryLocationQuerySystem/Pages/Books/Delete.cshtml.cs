@@ -22,14 +22,14 @@ namespace LibraryLocationQuerySystem.Pages.Books
         [BindProperty]
       public Book Book { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync(string? SortCallNumber, string? FormCallNumber)
         {
-            if (id == null || _context.Book == null)
+            if (SortCallNumber == null || FormCallNumber == null || _context.Book == null)
             {
                 return NotFound();
             }
 
-            var book = await _context.Book.FirstOrDefaultAsync(m => m.SortCallNumber == id);
+            var book = await _context.Book.FirstOrDefaultAsync(m => m.SortCallNumber == SortCallNumber && m.FormCallNumber == FormCallNumber);
 
             if (book == null)
             {
@@ -42,13 +42,13 @@ namespace LibraryLocationQuerySystem.Pages.Books
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string id)
+        public async Task<IActionResult> OnPostAsync(string? SortCallNumber, string? FormCallNumber)
         {
-            if (id == null || _context.Book == null)
+            if (SortCallNumber == null || FormCallNumber == null || _context.Book == null)
             {
                 return NotFound();
             }
-            var book = await _context.Book.FindAsync(id);
+            var book = await _context.Book.FirstOrDefaultAsync(m => m.SortCallNumber == SortCallNumber && m.FormCallNumber == FormCallNumber);
 
             if (book != null)
             {
