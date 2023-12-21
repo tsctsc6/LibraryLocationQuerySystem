@@ -1,9 +1,11 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
 @model LibraryLocationQuerySystem.Pages.Books.CreateModel
-
 @{
     ViewData["Title"] = "Create";
 }
+
+@attribute [Authorize(Roles = "admin")]
 
 <h1>Create</h1>
 

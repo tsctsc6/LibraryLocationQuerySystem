@@ -1,10 +1,13 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
+@using LibraryLocationQuerySystem.Areas.Identity.Models
+@inject UserManager<StudentUser> UserManager
 @model LibraryLocationQuerySystem.Pages.Books.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
-
+@attribute [Authorize(Roles = "reader")]
 <h1>Index</h1>
 
 <p>
@@ -35,7 +38,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Book) {
+    @foreach (var item in Model.Book) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.BookName)
@@ -56,11 +59,14 @@
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
-                    <a asp-page="./Edit" asp-route-SortCallNumber="@item.SortCallNumber" asp-route-FormCallNumber="@item.FormCallNumber">Edit</a> |
-                    <a asp-page="./Details" asp-route-SortCallNumber="@item.SortCallNumber" asp-route-FormCallNumber="@item.FormCallNumber">Details</a> |
-                    <a asp-page="./Delete" asp-route-SortCallNumber="@item.SortCallNumber" asp-route-FormCallNumber="@item.FormCallNumber">Delete</a>
+                    <a asp-page="./Details" asp-route-SortCallNumber="@item.SortCallNumber" asp-route-FormCallNumber="@item.FormCallNumber">Details</a>
+                    @if (@User.IsInRole("admin"))
+                    {
+                        <a asp-page="./Edit" asp-route-SortCallNumber="@item.SortCallNumber" asp-route-FormCallNumber="@item.FormCallNumber">Edit</a>
+                        <a asp-page="./Delete" asp-route-SortCallNumber="@item.SortCallNumber" asp-route-FormCallNumber="@item.FormCallNumber">Delete</a>
+                    }
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

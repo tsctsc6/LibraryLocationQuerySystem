@@ -1,10 +1,11 @@
 ﻿@page
+@using Microsoft.AspNetCore.Authorization
 @model LibraryLocationQuerySystem.Pages.Books.EditModel
 
 @{
     ViewData["Title"] = "Edit";
 }
-
+@attribute [Authorize(Roles = "admin")]
 <h1>Edit</h1>
 
 <h4>Book</h4>
