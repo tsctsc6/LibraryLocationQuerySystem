@@ -17,12 +17,12 @@
             <input type="hidden" asp-for="Book.FormCallNumber" />
             <div class="form-group">
                 <label asp-for="Book.SortCallNumber" class="control-label"></label>
-                <input asp-for="Book.SortCallNumber" class="form-control" />
+                <p>@Html.DisplayFor(model => model.Book.SortCallNumber)</p>
                 <span asp-validation-for="Book.SortCallNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Book.FormCallNumber" class="control-label"></label>
-                <input asp-for="Book.FormCallNumber" class="form-control" />
+                <p>@Html.DisplayFor(model => model.Book.FormCallNumber)</p>
                 <span asp-validation-for="Book.FormCallNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
