@@ -20,7 +20,7 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
         public IndexModel(StudentUserDbContext context)
 		{
 			_context = context;
-			pm = new() { NumPerPage = 2 };
+			pm = new() { NumPerPage = 20 };
 		}
 
 		public IList<StudentUser> StudentUsers { get; set; } = default!;
