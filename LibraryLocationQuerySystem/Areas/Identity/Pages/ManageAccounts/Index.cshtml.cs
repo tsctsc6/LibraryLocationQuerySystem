@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using LibraryLocationQuerySystem.Areas.Identity.Data;
 using LibraryLocationQuerySystem.Areas.Identity.Models;
+using LibraryLocationQuerySystem.Utilities;
 
 namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
 {
@@ -11,9 +12,15 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
 	{
 		private readonly StudentUserDbContext _context;
 
-		public IndexModel(StudentUserDbContext context)
+        public PageManager pm { get; private set; }
+        [BindProperty(SupportsGet = true)]
+        [Range(0, int.MaxValue)]
+        public int pageNum { get; set; } = 0;
+
+        public IndexModel(StudentUserDbContext context)
 		{
 			_context = context;
+			pm = new() { NumPerPage = 2 };
 		}
 
 		public IList<StudentUser> StudentUsers { get; set; } = default!;
@@ -38,7 +45,8 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
 			{
 				StudentUsers1 = StudentUsers1.Where(s => s.StudentId.Contains(SearchString));
 			}
-			StudentUsers = await StudentUsers1.ToListAsync();
+			pm.Set(pageNum, await StudentUsers1.CountAsync());
+			StudentUsers = await StudentUsers1.Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
 		}
 	}
 }

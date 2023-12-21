@@ -11,7 +11,9 @@
 <p>
 	<a asp-area="Identity" asp-page="/ManageAccounts/MultiRegister">批量注册</a>
 </p>
-
+<p>
+	@Html.DisplayFor(model => model.pm.ResNum)个结果，@Html.DisplayFor(model => model.pm.StartIndex)~@Html.DisplayFor(model => model.pm.EndIndex)
+</p>
 <form>
 	<p>
 		学号搜索: <input type="text" asp-for="SearchString" />
@@ -44,3 +46,18 @@
 		}
 	</tbody>
 </table>
+
+<div>
+	@if (@Model.pm.PreviousPage != @Model.pm.CurrentPage)
+	{
+		<a asp-page="./Index" asp-route-pageNum="@Model.pm.PreviousPage">上一页</a>
+	}
+	<form style="margin:0px; display:inline" class="form-inline" method="get">
+		页码：<input type="number" asp-for="pageNum" />
+		<input type="submit" value="跳转" />
+	</form>
+	@if (@Model.pm.NextPage != @Model.pm.CurrentPage)
+	{
+		<a asp-page="./Index" asp-route-pageNum="@Model.pm.NextPage">下一页</a>
+	}
+</div>
