@@ -21,22 +21,19 @@ namespace LibraryLocationQuerySystem.Pages.Books
 
       public Book Book { get; set; } = default!; 
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync(string? SortCallNumber, string? FormCallNumber)
         {
-            if (id == null || _context.Book == null)
+            if (SortCallNumber == null || FormCallNumber == null || _context.Book == null)
             {
                 return NotFound();
             }
 
-            var book = await _context.Book.FirstOrDefaultAsync(m => m.SortCallNumber == id);
+            var book = await _context.Book.FirstOrDefaultAsync(m => m.SortCallNumber == SortCallNumber && m.FormCallNumber == FormCallNumber);
             if (book == null)
             {
                 return NotFound();
             }
-            else 
-            {
-                Book = book;
-            }
+            Book = book;
             return Page();
         }
     }
