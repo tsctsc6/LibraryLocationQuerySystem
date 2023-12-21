@@ -17,6 +17,9 @@ namespace LibraryLocationQuerySystem.Pages.Books
     {
         private readonly LibraryLocationQuerySystem.Data.StoreManagerDbContext _context;
 
+		[BindProperty(SupportsGet = true)]
+		public string? SearchString { get; set; }
+
         public PageManager pm { get; private set; }
         [BindProperty(SupportsGet = true)]
         [Range(0, int.MaxValue)]
@@ -33,7 +36,10 @@ namespace LibraryLocationQuerySystem.Pages.Books
         public async Task OnGetAsync()
         {
             if (_context.Book == null) return;
-            pm.Set(pageNum, await _context.Book.CountAsync());
+
+			
+
+			pm.Set(pageNum, await _context.Book.CountAsync());
             Book = await _context.Book.Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
         }
     }
