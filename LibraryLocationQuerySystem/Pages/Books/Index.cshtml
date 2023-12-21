@@ -13,8 +13,26 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+<form style ="margin:0px; display:inline" class="form-inline" method="get">
+    <p>
+        <input type="text" asp-for="SearchString" />
+        <input type="submit" value="搜索" />
+    </p>
+    <p>
+        <input class="form-check-input" asp-for="SearchBookSortCallNumber" />
+        @Html.DisplayNameFor(m => m.SearchBookSortCallNumber)
+        <input class="form-check-input" asp-for="SearchBookFormCallNumber" />
+        @Html.DisplayNameFor(m => m.SearchBookFormCallNumber)
+        <input class="form-check-input" asp-for="SearchBookName" />
+        @Html.DisplayNameFor(m => m.SearchBookName)
+        <input class="form-check-input" asp-for="SearchPublishingHouse" />
+        @Html.DisplayNameFor(m => m.SearchPublishingHouse)
+        <input class="form-check-input" asp-for="SearchBookAuthor" />
+        @Html.DisplayNameFor(m => m.SearchBookAuthor)
+    </p>
+</form>
 <p>
-    共@Html.DisplayFor(model => model.pm.ResNum)个结果，@Html.DisplayFor(model => model.pm.StartIndex)~@Html.DisplayFor(model => model.pm.EndIndex)
+    共 @Html.DisplayFor(model => model.pm.ResNum)个结果，@Html.DisplayFor(model => model.pm.StartIndex)~@Html.DisplayFor(model => model.pm.EndIndex)
 </p>
 <table class="table">
     <thead>

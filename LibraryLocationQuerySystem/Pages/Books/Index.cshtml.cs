@@ -10,12 +10,33 @@ using LibraryLocationQuerySystem.Models;
 using Microsoft.Identity.Client;
 using System.ComponentModel.DataAnnotations;
 using LibraryLocationQuerySystem.Utilities;
+using System.ComponentModel;
 
 namespace LibraryLocationQuerySystem.Pages.Books
 {
     public class IndexModel : PageModel
     {
         private readonly LibraryLocationQuerySystem.Data.StoreManagerDbContext _context;
+
+		[BindProperty(SupportsGet = true)]
+        [DisplayName("搜索中图法分类号")]
+		public bool SearchBookSortCallNumber { get; set; }
+
+		[BindProperty(SupportsGet = true)]
+		[DisplayName("搜索书次号")]
+		public bool SearchBookFormCallNumber { get; set; }
+
+		[BindProperty(SupportsGet = true)]
+		[DisplayName("搜索书名")]
+		public bool SearchBookName { get; set; } = true;
+
+		[BindProperty(SupportsGet = true)]
+		[DisplayName("搜索出版社")]
+		public bool SearchPublishingHouse { get; set; }
+
+		[BindProperty(SupportsGet = true)]
+		[DisplayName("搜索作者")]
+		public bool SearchBookAuthor { get; set; }
 
 		[BindProperty(SupportsGet = true)]
 		public string? SearchString { get; set; }
@@ -37,10 +58,21 @@ namespace LibraryLocationQuerySystem.Pages.Books
         {
             if (_context.Book == null) return;
 
-			
+            IQueryable<Book> _Book = _context.Book;
+
+			if (!string.IsNullOrEmpty(SearchString))
+            {
+                _Book = _Book.Where(b => 
+                    (SearchBookSortCallNumber && b.SortCallNumber.Contains(SearchString)) ||
+                    (SearchBookFormCallNumber && b.FormCallNumber.Contains(SearchString)) ||
+                    (SearchBookName && b.BookName.Contains(SearchString)) ||
+					(SearchPublishingHouse && b.PublishingHouse.Contains(SearchString)) ||
+					(SearchBookAuthor && b.Author.Contains(SearchString))
+				);
+			}
 
 			pm.Set(pageNum, await _context.Book.CountAsync());
-            Book = await _context.Book.Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
+            Book = await _Book.Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
         }
     }
 }
