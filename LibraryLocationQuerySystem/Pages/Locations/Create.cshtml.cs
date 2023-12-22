@@ -117,11 +117,13 @@ namespace LibraryLocationQuerySystem.Pages.Locations
                 return;
             }
         }
-        /*
+        
 		public async Task<JsonResult> OnGetParentAsync(int LocationLevel, int LocationParent)
 		{
-
-		}
-		*/
+            if (_context.Location == null) return new JsonResult("_context.Location == null");
+            var res = await _context.Location.Where(l => l.LocationLevel == LocationLevel && l.LocationParent == LocationParent).ToListAsync();
+            return new JsonResult(res);
+        }
+		
     }
 }
