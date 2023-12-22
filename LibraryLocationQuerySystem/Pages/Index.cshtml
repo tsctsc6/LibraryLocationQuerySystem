@@ -9,5 +9,10 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 <div class="text-center">
-    
+    @if (!Model.IsPasswordChanged)
+    {
+        <p>
+            你的密码是初始密码，<a asp-area="Identity" asp-page="/Account/Manage/ChangePassword">点击这里</a>更改密码
+        </p>
+    }
 </div>
