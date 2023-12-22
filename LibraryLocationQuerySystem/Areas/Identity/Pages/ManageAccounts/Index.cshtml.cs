@@ -36,17 +36,17 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
 			if (Role_admin == null) throw new ArgumentNullException("Null ADMIN");
 			var StudentUserIds_reader = _context.UserRoles.Where(ur => ur.RoleId == Role_admin.Id);
 
-			var StudentUsers1 = _context.Users.Except(
+			IQueryable<StudentUser> _StudentUsers = _context.Users.Except(
 				from u in _context.Users
 				join ur in StudentUserIds_reader on u.Id equals ur.UserId
 				select u);
 
 			if (!string.IsNullOrEmpty(SearchString))
 			{
-				StudentUsers1 = StudentUsers1.Where(s => s.StudentId.Contains(SearchString));
+				_StudentUsers = _StudentUsers.Where(s => s.StudentId.Contains(SearchString));
 			}
-			pm.Set(pageNum, await StudentUsers1.CountAsync());
-			StudentUsers = await StudentUsers1.Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
+			pm.Set(pageNum, await _StudentUsers.CountAsync());
+			StudentUsers = await _StudentUsers.Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
 		}
 	}
 }
