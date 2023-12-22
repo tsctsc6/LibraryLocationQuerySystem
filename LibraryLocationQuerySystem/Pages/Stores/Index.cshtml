@@ -1,0 +1,48 @@
+﻿@page
+@model LibraryLocationQuerySystem.Pages.Stores.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Store[0].StoreDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Store[0].StoreNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Store[0].RemainNum)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Store) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreNum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RemainNum)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

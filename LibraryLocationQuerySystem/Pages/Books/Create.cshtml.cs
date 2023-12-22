@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LibraryLocationQuerySystem.Data;
 using LibraryLocationQuerySystem.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace LibraryLocationQuerySystem.Pages.Books
 {
@@ -37,7 +39,13 @@ namespace LibraryLocationQuerySystem.Pages.Books
             }
 
             await _context.Book.AddAsync(Book);
-            await _context.SaveChangesAsync();
+            try { await _context.SaveChangesAsync(); }
+            catch(DbUpdateException e)
+            {
+                ModelState.AddModelError(string.Empty, e.InnerException?.Message??string.Empty);
+                return Page();
+            }
+            
 
             return RedirectToPage("./Index");
         }

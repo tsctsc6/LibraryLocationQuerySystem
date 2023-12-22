@@ -54,9 +54,14 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             }
             SetLocationLevelAndParent();
             await _context.Location.AddAsync(Location);
-            await _context.SaveChangesAsync();
+			try { await _context.SaveChangesAsync(); }
+			catch (DbUpdateException e)
+			{
+				ModelState.AddModelError(string.Empty, e.InnerException?.Message ?? string.Empty);
+				return Page();
+			}
 
-            return RedirectToPage("./Index");
+			return RedirectToPage("./Index");
         }
 
         private async Task InitSelectGrop()
