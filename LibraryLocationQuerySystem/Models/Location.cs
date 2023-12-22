@@ -4,15 +4,15 @@ using System.Text.Json.Serialization;
 
 namespace LibraryLocationQuerySystem.Models
 {
-    [PrimaryKey("LocationLevel", "LocationId", "LocationParent")]
+    [PrimaryKey("LocationLevel", "LocationId")]
     public class Location
     {
         public byte LocationLevel { get; set; }
 
-        [Range(1, byte.MaxValue)]
-        public byte LocationId { get; set; }
+        [Range(1, ushort.MaxValue)]
+        public ushort LocationId { get; set; }
 
-        public byte LocationParent { get; set; }
+        public ushort LocationParent { get; set; }
 
         [Required]
         [StringLength(30)]
