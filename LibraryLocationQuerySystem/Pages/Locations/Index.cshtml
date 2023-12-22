@@ -10,3 +10,36 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+<p>
+	@(Model.LocationPath)
+</p>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Location[0].LocationName)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.Location)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.LocationName)
+				</td>
+				<td>
+					@if (item.LocationLevel < 4)
+					{
+						<a asp-page="./Index" asp-route-LocationLevel="@(item.LocationLevel + 1)" asp-route-LocationParentId="@item.LocationId">Enter</a>
+					}
+					<a asp-page="./Edit" asp-route-LocationLevel="@item.LocationLevel" asp-route-LocationParentId="@item.LocationId">Edit</a>
+					<a asp-page="./Delete" asp-route-LocationLevel="@item.LocationLevel" asp-route-LocationParentId="@item.LocationId">Delete</a>
+				</td>
+			</tr>
+		}
+
+	</tbody>
+</table>

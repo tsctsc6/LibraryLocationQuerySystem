@@ -15,11 +15,11 @@ namespace LibraryLocationQuerySystem.Pages.Locations
     {
 		public class SelectGroupView
         {
-			public byte CampusId { get; set; }
-			public byte LibraryId { get; set; }
-			public byte FloorId { get; set; }
-			public byte BookshelfId { get; set; }
-			//public byte LayerId { get; set; }
+			public short CampusId { get; set; }
+			public short LibraryId { get; set; }
+			public short FloorId { get; set; }
+			public short BookshelfId { get; set; }
+			//public short LayerId { get; set; }
 		}
 
 		private readonly StoreManagerDbContext _context;
