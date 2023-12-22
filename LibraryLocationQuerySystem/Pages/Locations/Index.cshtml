@@ -15,6 +15,10 @@
 	@(Model.LocationPath)
 </p>
 
+<p>
+	<a asp-page="Index" asp-route-LocationLevel="@Model.PreviousLevel" asp-route-LocationParentId="@Model.PreviousLevelId">上一级</a>
+</p>
+
 <table class="table">
 	<thead>
 		<tr>
@@ -35,8 +39,8 @@
 					{
 						<a asp-page="./Index" asp-route-LocationLevel="@(item.LocationLevel + 1)" asp-route-LocationParentId="@item.LocationId">Enter</a>
 					}
-					<a asp-page="./Edit" asp-route-LocationLevel="@item.LocationLevel" asp-route-LocationParentId="@item.LocationId">Edit</a>
-					<a asp-page="./Delete" asp-route-LocationLevel="@item.LocationLevel" asp-route-LocationParentId="@item.LocationId">Delete</a>
+					<a asp-page="./Edit" asp-route-LocationLevel="@item.LocationLevel" asp-route-LocationId="@item.LocationId">Edit</a>
+					<a asp-page="./Delete" asp-route-LocationLevel="@item.LocationLevel" asp-route-LocationId="@item.LocationId">Delete</a>
 				</td>
 			</tr>
 		}

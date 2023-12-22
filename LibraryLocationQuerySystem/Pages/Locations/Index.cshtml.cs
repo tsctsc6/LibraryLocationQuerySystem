@@ -16,14 +16,18 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             _context = context;
         }
 
-        public string LocationPath { get; set; } = "";
+        public string LocationPath { get; set; } = "/ ";
+        public byte PreviousLevel { get; set; }
+        public short PreviousLevelId { get; set; }
 
-        public IList<Location> Location { get; set; } = default!;
+
+		public IList<Location> Location { get; set; } = default!;
 
         public async Task OnGetAsync(byte? LocationLevel, short? LocationParentId)
         {
             if (_context.Location == null) return;
-            if (LocationLevel > 4)
+            await SetPreviousLevel(LocationLevel, LocationParentId);
+			if (LocationLevel > 4)
 			{
 				Location = new List<Location>();
 				return;
@@ -53,14 +57,14 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 			List<string> strings = new();
             while(LocationLevel > 0)
             {
-                var loc = await _context.Location.Where(l => l.LocationLevel == LocationLevel &&
-                    l.LocationParent == LocationParentId).FirstOrDefaultAsync();
+				LocationLevel--;
+				var loc = await _context.Location.Where(l => l.LocationLevel == LocationLevel &&
+                    l.LocationId == LocationParentId).FirstOrDefaultAsync();
                 if (loc == null) throw new ArgumentNullException("Location元组not find");
                 LocationParentId = loc.LocationParent;
 				strings.Insert(0, loc.LocationName);
-				LocationLevel--;
 			}
-            StringBuilder sb = new();
+            StringBuilder sb = new("/ ");
             foreach(var item in strings)
             {
                 sb.Append(item);
@@ -68,6 +72,26 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             }
             LocationPath = sb.ToString();
 		}
-
+        private async Task SetPreviousLevel(byte? LocationLevel, short? LocationParentId)
+        {
+			if (LocationLevel == null || LocationLevel <= 0 || LocationParentId == null)
+            {
+                PreviousLevel = 0;
+                PreviousLevelId = 0;
+                return;
+			}
+			if (LocationLevel > 4)
+            {
+                PreviousLevel = 4;
+                PreviousLevelId = (short)LocationParentId;
+                return;
+			}
+            PreviousLevel = (byte)(LocationLevel - 1);
+			if (_context.Location == null) return;
+			var loc = await _context.Location.Where(l => l.LocationLevel == LocationLevel &&
+					l.LocationParent == LocationParentId).FirstOrDefaultAsync();
+			if (loc == null) throw new ArgumentNullException("Location元组not find");
+			PreviousLevelId = loc.LocationParent;
+		}
 	}
 }
