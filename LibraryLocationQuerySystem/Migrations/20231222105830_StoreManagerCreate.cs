@@ -34,8 +34,8 @@ namespace LibraryLocationQuerySystem.Migrations
                 columns: table => new
                 {
                     LocationLevel = table.Column<byte>(type: "tinyint", nullable: false),
-                    LocationId = table.Column<int>(type: "int", nullable: false),
-                    LocationParent = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<short>(type: "smallint", nullable: false),
+                    LocationParent = table.Column<short>(type: "smallint", nullable: false),
                     LocationName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
@@ -50,7 +50,7 @@ namespace LibraryLocationQuerySystem.Migrations
                     BookSortCallNumber = table.Column<string>(type: "nchar(15)", nullable: false),
                     BookFormCallNumber = table.Column<string>(type: "nchar(15)", nullable: false),
                     LocationLevel = table.Column<byte>(type: "tinyint", nullable: false),
-                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<short>(type: "smallint", nullable: false),
                     StoreDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     StoreNum = table.Column<byte>(type: "tinyint", nullable: false),
                     RemainNum = table.Column<byte>(type: "tinyint", nullable: false)

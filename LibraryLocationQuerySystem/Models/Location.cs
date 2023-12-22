@@ -9,10 +9,10 @@ namespace LibraryLocationQuerySystem.Models
     {
         public byte LocationLevel { get; set; }
 
-        [Range(1, ushort.MaxValue)]
-        public ushort LocationId { get; set; }
+        [Range(1, short.MaxValue)]
+        public short LocationId { get; set; }
 
-        public ushort LocationParent { get; set; }
+        public short LocationParent { get; set; }
 
         [Required]
         [StringLength(30)]

@@ -66,16 +66,16 @@ namespace LibraryLocationQuerySystem.Migrations
                     b.Property<byte>("LocationLevel")
                         .HasColumnType("tinyint");
 
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
+                    b.Property<short>("LocationId")
+                        .HasColumnType("smallint");
 
                     b.Property<string>("LocationName")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("LocationParent")
-                        .HasColumnType("int");
+                    b.Property<short>("LocationParent")
+                        .HasColumnType("smallint");
 
                     b.HasKey("LocationLevel", "LocationId");
 
@@ -93,8 +93,8 @@ namespace LibraryLocationQuerySystem.Migrations
                     b.Property<byte>("LocationLevel")
                         .HasColumnType("tinyint");
 
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
+                    b.Property<short>("LocationId")
+                        .HasColumnType("smallint");
 
                     b.Property<byte>("RemainNum")
                         .HasColumnType("tinyint");
