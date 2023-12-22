@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Locations\" />
     <Folder Include="Pages\Stores\" />
   </ItemGroup>
 
