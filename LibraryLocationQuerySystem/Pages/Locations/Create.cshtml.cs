@@ -13,14 +13,13 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 {
     public class CreateModel : PageModel
     {
-		//LocationLevel  LocationId  LocationParent
 		public class SelectGroupView
         {
 			public byte CampusId { get; set; }
 			public byte LibraryId { get; set; }
 			public byte FloorId { get; set; }
 			public byte BookshelfId { get; set; }
-			public byte LayerId { get; set; }
+			//public byte LayerId { get; set; }
 		}
 
 		private readonly StoreManagerDbContext _context;
@@ -31,7 +30,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 		public List<SelectListItem> Libraries { get; set; }
 		public List<SelectListItem> Floors { get; set; }
 		public List<SelectListItem> Bookshelves { get; set; }
-		public List<SelectListItem> Layers { get; set; }
+		//public List<SelectListItem> Layers { get; set; }
 
         [BindProperty]
         public Location Location { get; set; } = default!;
@@ -48,6 +47,13 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 
         public async Task<IActionResult> OnPostAsync()
 		{
+            if (!ModelState.IsValid || _context.Location == null || Location == null)
+            {
+                return Page();
+            }
+            SetLocationLevelAndParent();
+            await _context.Location.AddAsync(Location);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
@@ -71,15 +77,45 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             Bookshelves = await _context.Location.Where(l => l.LocationLevel == 3 && l.LocationParent == selectGroupView.FloorId)
                 .Select(l => new SelectListItem(l.LocationName, l.LocationId.ToString())).ToListAsync();
             Bookshelves.Insert(0, new("(Î´Ñ¡Ôñ)", "0"));
-
+            /*
             Layers = await _context.Location.Where(l => l.LocationLevel == 4 && l.LocationParent == selectGroupView.BookshelfId)
                 .Select(l => new SelectListItem(l.LocationName, l.LocationId.ToString())).ToListAsync();
             Layers.Insert(0, new("(Î´Ñ¡Ôñ)", "0"));
+            */
         }
 
         private void SetLocationLevelAndParent()
         {
-
+            if (selectGroupView.CampusId == 0)
+            {
+                Location.LocationLevel = 0;
+                Location.LocationParent = 0;
+                return;
+            }
+            if (selectGroupView.LibraryId == 0)
+            {
+                Location.LocationLevel = 1;
+                Location.LocationParent = selectGroupView.CampusId;
+                return;
+            }
+            if (selectGroupView.FloorId == 0)
+            {
+                Location.LocationLevel = 2;
+                Location.LocationParent = selectGroupView.LibraryId;
+                return;
+            }
+            if (selectGroupView.BookshelfId == 0)
+            {
+                Location.LocationLevel = 3;
+                Location.LocationParent = selectGroupView.FloorId;
+                return;
+            }
+            else
+            {
+                Location.LocationLevel = 4;
+                Location.LocationParent = selectGroupView.BookshelfId;
+                return;
+            }
         }
         /*
 		public async Task<JsonResult> OnGetParentAsync(int LocationLevel, int LocationParent)

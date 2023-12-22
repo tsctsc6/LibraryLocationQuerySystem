@@ -36,7 +36,7 @@ namespace LibraryLocationQuerySystem.Pages.Books
                 return Page();
             }
 
-            _context.Book.Add(Book);
+            await _context.Book.AddAsync(Book);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
