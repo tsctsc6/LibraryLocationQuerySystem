@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace LibraryLocationQuerySystem.Models
 {
@@ -19,7 +20,9 @@ namespace LibraryLocationQuerySystem.Models
         [Display(Name = "位置名")]
         public string LocationName { get; set; }
 
+        [JsonIgnore]
         public List<Book> Books { get; } = new();
+        [JsonIgnore]
         public List<Store> Stores { get; } = new();
     }
 }

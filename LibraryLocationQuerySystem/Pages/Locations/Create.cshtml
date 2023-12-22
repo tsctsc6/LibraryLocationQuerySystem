@@ -52,11 +52,29 @@
 @section Scripts
     {
     <script>
-        function OnLibraryChange() {
+        function OnCampusChange() {
             var LocationId = $(this).val();
+            console.log(LocationId);
             $("#selectGroupView_LibraryId").empty();
             if (LocationId != 0) {
                 $("#selectGroupView_LibraryId").append(`<option value="0">(未选择)</option>`);
+            }
+            $.getJSON(`?handler=Parent&LocationLevel=1&LocationParent=${LocationId}`, (data) => {
+                console.log(data);
+                $.each(data, function (i, item) {
+                    console.log(item);
+                    $("#selectGroupView_LibraryId").append(`<option value="${item.LocationId}">${item.LocationName}</option>`);
+                });
+                $("#selectGroupView_LibraryId").change();
+            });
+        };
+
+        function OnLibraryChange() {
+            var LocationId = $(this).val();
+            console.log(LocationId);
+            $("#selectGroupView_FloorId").empty();
+            if (LocationId != 0) {
+                $("#selectGroupView_FloorId").append(`<option value="0">(未选择)</option>`);
             }
             $.getJSON(`?handler=Parent&LocationLevel=2&LocationParent=${LocationId}`, (data) => {
                 console.log(data);
@@ -70,9 +88,10 @@
 
         function OnFloorChange() {
             var LocationId = $(this).val();
-            $("#selectGroupView_FloorId").empty();
+            console.log(LocationId);
+            $("#selectGroupView_BookshelfId").empty();
             if (LocationId != 0) {
-                $("#selectGroupView_FloorId").append(`<option value="0">(未选择)</option>`);
+                $("#selectGroupView_BookshelfId").append(`<option value="0">(未选择)</option>`);
             }
             $.getJSON(`?handler=Parent&LocationLevel=3&LocationParent=${LocationId}`, (data) => {
                 console.log(data);
@@ -84,26 +103,10 @@
             });
         };
 
-        function OnBookshelfChange() {
-            var LocationId = $(this).val();
-            $("#selectGroupView_BookshelfId").empty();
-            if (LocationId != 0) {
-                $("#selectGroupView_BookshelfId").append(`<option value="0">(未选择)</option>`);
-            }
-            $.getJSON(`?handler=Parent&LocationLevel=4&LocationParent=${LocationId}`, (data) => {
-                console.log(data);
-                $.each(data, function (i, item) {
-                    console.log(item);
-                    $("#selectGroupView_LayerId").append(`<option value="${item.LocationId}">${item.LocationName}</option>`);
-                });
-                $("#selectGroupView_LayerId").change();
-            });
-        };
-
         $(function () {
+            $("#selectGroupView_CampusId").on("change", OnCampusChange);
             $("#selectGroupView_LibraryId").on("change", OnLibraryChange);
             $("#selectGroupView_FloorId").on("change", OnFloorChange);
-            $("#selectGroupView_BookshelfId").on("change", OnBookshelfChange);
         });
     </script>
 }
