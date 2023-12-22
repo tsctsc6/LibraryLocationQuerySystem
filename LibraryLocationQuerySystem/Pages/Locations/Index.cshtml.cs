@@ -19,7 +19,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 
         public IList<Location> Location { get; set; } = default!;
 
-        public async Task OnGetAsync(byte? LocationLevel, byte? LocationId, byte? LocationParent)
+        public async Task OnGetAsync(byte? LocationLevel, byte? LocationId)
         {
             if (_context.Location == null) return;
             IQueryable<Location> _Location = _context.Location;

@@ -23,15 +23,15 @@ namespace LibraryLocationQuerySystem.Pages.Locations
         [BindProperty]
         public Location Location { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(byte? LocationLevel, byte? LocationId, byte? LocationParent)
+        public async Task<IActionResult> OnGetAsync(byte? LocationLevel, byte? LocationId)
         {
-            if (LocationLevel == null || LocationId == null || LocationParent == null || _context.Location == null)
+            if (LocationLevel == null || LocationId == null || _context.Location == null)
             {
                 return NotFound();
             }
 
             var location =  await _context.Location.FirstOrDefaultAsync(
-                m => m.LocationLevel == LocationLevel && m.LocationId == LocationParent && m.LocationParent == LocationParent);
+                m => m.LocationLevel == LocationLevel && m.LocationId == LocationId);
             if (location == null)
             {
                 return NotFound();
@@ -57,7 +57,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LocationExists(Location.LocationLevel, Location.LocationId, Location.LocationParent))
+                if (!LocationExists(Location.LocationLevel, Location.LocationId))
                 {
                     return NotFound();
                 }
@@ -70,10 +70,10 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             return RedirectToPage("./Index");
         }
 
-        private bool LocationExists(byte LocationLevel, byte LocationId, byte LocationParent)
+        private bool LocationExists(byte LocationLevel, short LocationId)
         {
             return (_context.Location?.Any(m => m.LocationLevel == LocationLevel &&
-                m.LocationId == LocationParent && m.LocationParent == LocationParent)).GetValueOrDefault();
+                m.LocationId == LocationId)).GetValueOrDefault();
         }
     }
 }
