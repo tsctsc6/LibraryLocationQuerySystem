@@ -55,11 +55,21 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 			if (location != null)
             {
                 Location = location;
-                _context.Location.Remove(Location);
-                await _context.SaveChangesAsync();
+                Delete(Location);
+				await _context.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index");
         }
+        private void Delete(Location? loc)
+        {
+            if (loc == null) return;
+            var chileren = _context.Location.Where(l => l.LocationLevel == loc.LocationLevel + 1 && l.LocationParent == loc.LocationId).ToList();
+            foreach (var item in chileren)
+            {
+                Delete(item);
+			}
+			_context.Location.Remove(loc);
+		}
     }
 }
