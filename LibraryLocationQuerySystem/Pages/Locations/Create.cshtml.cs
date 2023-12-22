@@ -47,6 +47,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 
         public async Task<IActionResult> OnPostAsync()
 		{
+            await InitSelectGrop();
             if (!ModelState.IsValid || _context.Location == null || Location == null)
             {
                 return Page();
