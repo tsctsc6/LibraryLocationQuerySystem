@@ -35,8 +35,6 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
         [BindProperty]
         public BufferedSingleFileUploadPhysical FileUpload { get; set; }
 
-        public List<string> ResultMessages { get; private set; } = new();
-
         private readonly string[] _permittedExtensions = { ".xlsx" };
         private readonly long _fileSizeLimit = 2097152;
         private string defaultPassword = "Abc@123";
@@ -54,7 +52,7 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
 
             if (!ModelState.IsValid)
             {
-                ResultMessages.Add("Please correct the form.");
+                ModelState.AddModelError(string.Empty, "Please correct the form.");
                 return Page();
             }
             var formFileContent =
@@ -62,7 +60,7 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
                     FileUpload.FormFile, ModelState, _permittedExtensions, _fileSizeLimit);
             if (!ModelState.IsValid)
             {
-                ResultMessages.Add("Please correct the form.");
+                ModelState.AddModelError(string.Empty, "Please correct the form.");
                 return Page();
             }
             IEnumerable<string?> studentIds;
@@ -73,7 +71,7 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
                     var worksheet = package.Workbook.Worksheets.FirstOrDefault();
                     if (worksheet == null)
                     {
-                        ResultMessages.Add("这个文件没有Worksheet");
+                        ModelState.AddModelError(string.Empty, "这个文件没有Worksheet");
                         return Page();
                     }
                     var maxAddress = worksheet.Dimension.Address.Split(":");
@@ -98,11 +96,11 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
                             {
                                 foreach (var e in result.Errors)
                                 {
-                                    ResultMessages.Add(e.Description);
+                                    ModelState.AddModelError(string.Empty, e.Description);
                                 }
                             }
                         }
-                        catch (Exception e) { ResultMessages.Add(e.Message); }
+                        catch (Exception e) { ModelState.AddModelError(string.Empty, e.Message); }
                     }
                 }
             }

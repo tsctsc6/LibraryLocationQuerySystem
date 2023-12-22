@@ -28,7 +28,7 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
             var user = await _userManager.FindByNameAsync(StudentId);
             if (user == null)
             {
-                ResultMessages.Add("no user");
+                ModelState.AddModelError(string.Empty, "no user");
                 return Page();
             }
             var roles = await _userManager.GetRolesAsync(user);
@@ -41,13 +41,12 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
             if (result.Succeeded)
             {
                 user.IsPasswordChanged = false;
-                ResultMessages.Add($"{StudentId} 重置密码成功");
+                ModelState.AddModelError(string.Empty, $"{StudentId} 重置密码成功");
                 return Page();
             }
 
             foreach (var error in result.Errors)
             {
-                ResultMessages.Add(error.Description);
                 ModelState.AddModelError(string.Empty, error.Description);
             }
             return Page();

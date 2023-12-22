@@ -14,18 +14,11 @@
             <label asp-for="FileUpload.FormFile"></label>
         </dt>
         <dd>
-            <input asp-for="FileUpload.FormFile" type="file" />
+            <input asp-for="FileUpload.FormFile" type="file" class="btn btn-lg btn-primary" />
             <span asp-validation-for="FileUpload.FormFile" class="text-danger"></span>
         </dd>
     </dl>
-    <button id="multiRegisterSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Upload</button>
+    <button id="multiRegisterSubmit" type="submit" class="btn btn-lg btn-primary">Upload</button>
 </form>
 
-<ui class="result">
-    @foreach (var item in Model.ResultMessages)
-    {
-        <li>
-            @item
-        </li>
-    }
-</ui>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
