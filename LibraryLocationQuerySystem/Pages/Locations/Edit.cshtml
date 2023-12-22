@@ -1,6 +1,7 @@
 ﻿@page
 @model LibraryLocationQuerySystem.Pages.Locations.EditModel
-
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "admin")]
 @{
     ViewData["Title"] = "Edit";
 }
