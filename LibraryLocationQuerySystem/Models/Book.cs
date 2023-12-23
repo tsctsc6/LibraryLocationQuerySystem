@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 namespace LibraryLocationQuerySystem.Models
 {
     [PrimaryKey("BookSortCallNumber", "BookFormCallNumber")]
+    [Index(nameof(BookName))]
     public class Book
     {
         [StringLength(15)]
