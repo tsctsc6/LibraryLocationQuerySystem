@@ -62,7 +62,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         }
 
         public IList<Store> Store { get;set; } = default!;
-        public IList<Book> Book { get; set; } = default!;
+        public IList<Book> BookList { get; set; } = default!;
 
         [BindProperty(SupportsGet = true)]
         public SearchOptionModel searchOption { get; set; } = new();
@@ -85,7 +85,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             if (_context.Location == null || _context.Book == null || _context.Store == null) return;
             if (searchOption.selectGroupView.CampusId == 0)
             {
-                Book = await _context.Book.ToListAsync();
+                BookList = await _context.Book.ToListAsync();
                 return;
             }
             List<Location> LocationList = new();
@@ -119,10 +119,10 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                     l.LocationId == searchOption.selectGroupView.LayerId).FirstOrDefaultAsync();
                 LocationList = await GetEndLocations(loc);
             }
-            Book = new List<Book>();
+            BookList = new List<Book>();
             foreach (var item in LocationList)
             {
-                Book.Concat(item.Books);
+                BookList.Concat(item.Books);
             }
         }
 

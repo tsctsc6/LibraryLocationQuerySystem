@@ -1,0 +1,189 @@
+﻿@page
+@model LibraryLocationQuerySystem.Pages.Stores.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Store</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Book.SortCallNumber" class="control-label"></label>
+                <input asp-for="Book.SortCallNumber" class="form-control" />
+                <span asp-validation-for="Book.SortCallNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.FormCallNumber" class="control-label"></label>
+                <input asp-for="Book.FormCallNumber" class="form-control" />
+                <span asp-validation-for="Book.FormCallNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.BookName" class="control-label"></label>
+                <input asp-for="Book.BookName" class="form-control" />
+                <span asp-validation-for="Book.BookName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.PublishingHouse" class="control-label"></label>
+                <input asp-for="Book.PublishingHouse" class="form-control" />
+                <span asp-validation-for="Book.PublishingHouse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.Author" class="control-label"></label>
+                <input asp-for="Book.Author" class="form-control" />
+                <span asp-validation-for="Book.Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.PublicDate" class="control-label"></label>
+                <input asp-for="Book.PublicDate" class="form-control" />
+                <span asp-validation-for="Book.PublicDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.EndDate" class="control-label"></label>
+                <input asp-for="Book.EndDate" class="form-control" />
+                <span asp-validation-for="Book.EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.Type" class="control-label"></label>
+                <input asp-for="Book.Type" class="form-control" />
+                <span asp-validation-for="Book.Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">如果中图法分类号和书次号冲突</label>
+                <select asp-for="Input.selectGroupView.IfConflict" asp-items="Model.Input.IfConflict" class="form-control"></select>
+            </div>
+            <hr/>
+            <div class="form-group">
+                <label class="control-label">校区</label>
+                <select asp-for="Input.selectGroupView.CampusId" asp-items="Model.Input.Campuses" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">图书馆/图书室</label>
+                <select asp-for="Input.selectGroupView.LibraryId" asp-items="Model.Input.Libraries" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">楼层</label>
+                <select asp-for="Input.selectGroupView.FloorId" asp-items="Model.Input.Floors" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">书架</label>
+                <select asp-for="Input.selectGroupView.BookshelfId" asp-items="Model.Input.Bookshelves" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">书架层</label>
+                <select asp-for="Input.selectGroupView.LayerId" asp-items="Model.Input.Layers" class="form-control"></select>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Store.StoreNum" class="control-label"></label>
+                <input asp-for="Store.StoreNum" class="form-control" />
+                <span asp-validation-for="Store.StoreNum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Store.RemainNum" class="control-label"></label>
+                <input asp-for="Store.RemainNum" class="form-control" />
+                <span asp-validation-for="Store.RemainNum" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@if (ViewData["AlertMessage"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewData["AlertMessage"]");
+        };
+    </script>
+}
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function OnCampusChange() {
+            var LocationId = $(this).val();
+            console.log(`Campus:${LocationId}`);
+            $("#Input_selectGroupView_LibraryId").empty();
+            $("#Input_selectGroupView_LibraryId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=1&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#Input_selectGroupView_LibraryId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                    $("#Input_selectGroupView_LibraryId").change();
+                });
+            }
+            else { $("#Input_selectGroupView_LibraryId").change(); }
+        };
+
+        function OnLibraryChange() {
+            var LocationId = $(this).val();
+            console.log(`Library:${LocationId}`);
+            $("#Input_selectGroupView_FloorId").empty();
+            $("#Input_selectGroupView_FloorId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=2&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#Input_selectGroupView_FloorId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                    $("#Input_selectGroupView_FloorId").change();
+                });
+            }
+            else { $("#Input_selectGroupView_FloorId").change(); }
+        };
+
+        function OnFloorChange() {
+            var LocationId = $(this).val();
+            console.log(`Floor:${LocationId}`);
+            $("#Input_selectGroupView_BookshelfId").empty();
+            $("#Input_selectGroupView_BookshelfId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=3&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#Input_selectGroupView_BookshelfId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                    $("#Input_selectGroupView_BookshelfId").change();
+                });
+            }
+            else { $("#Input_selectGroupView_BookshelfId").change(); }
+        };
+
+        function OnBookshelfChange() {
+            var LocationId = $(this).val();
+            console.log(`Bookshelf:${LocationId}`);
+            $("#Input_selectGroupView_LayerId").empty();
+            $("#Input_selectGroupView_LayerId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=4&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#Input_selectGroupView_LayerId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                });
+            }
+        };
+
+        $(function () {
+            $("#Input_selectGroupView_CampusId").on("change", OnCampusChange);
+            $("#Input_selectGroupView_LibraryId").on("change", OnLibraryChange);
+            $("#Input_selectGroupView_FloorId").on("change", OnFloorChange);
+            $("#Input_selectGroupView_BookshelfId").on("change", OnBookshelfChange);
+        });
+    </script>
+}
