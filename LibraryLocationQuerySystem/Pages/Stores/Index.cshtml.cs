@@ -25,8 +25,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             _context = context;
         }
 
-        [BindProperties(SupportsGet = true)]
-        public class SearchOption
+        public class SearchOptionModel
         {
             public string SearchString;
 
@@ -45,7 +44,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             [DisplayName("搜索作者")]
             public bool SearchBookAuthor { get; set; }
 
-            public SelectGroupView selectGroupView { get; set; } = new();
+            public SelectGroupViewModel selectGroupView { get; set; } = new();
             public List<SelectListItem> Campuses { get; set; }
             public List<SelectListItem> Libraries { get; set; }
             public List<SelectListItem> Floors { get; set; }
@@ -53,7 +52,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             public List<SelectListItem> Layers { get; set; }
         }
 
-        public class SelectGroupView
+        public class SelectGroupViewModel
         {
             public short CampusId { get; set; }
             public short LibraryId { get; set; }
@@ -64,17 +63,19 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 
         public IList<Store> Store { get;set; } = default!;
 
-        public SearchOption searchOption { get; set; } = new();
+        [BindProperty(SupportsGet = true)]
+        public SearchOptionModel searchOption { get; set; } = new();
 
         public PageManager pm { get; set; } = new() { NumPerPage = 20 };
         [BindProperty(SupportsGet = true)]
         [Range(0, int.MaxValue)]
         public int pageNum { get; set; } = 0;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             await InitSelectGrop();
             Store = new List<Store>();
+            return Page();
         }
 
         private async Task InitSelectGrop()
