@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace LibraryLocationQuerySystem.Models
 {
@@ -6,6 +7,7 @@ namespace LibraryLocationQuerySystem.Models
     {
         public DateTime StoreDate { get; set; }
 
+        [Required]
         public byte StoreNum { get; set; }
 
         public byte RemainNum { get; set; }

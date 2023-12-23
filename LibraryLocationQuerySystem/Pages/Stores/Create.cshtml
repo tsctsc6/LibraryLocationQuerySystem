@@ -15,50 +15,54 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="Book.SortCallNumber" class="control-label"></label>
-                <input asp-for="Book.SortCallNumber" class="form-control" />
-                <span asp-validation-for="Book.SortCallNumber" class="text-danger"></span>
+                <label asp-for="Store.Book.SortCallNumber" class="control-label"></label>
+                <input asp-for="Store.Book.SortCallNumber" class="form-control" />
+                <span asp-validation-for="Store.Book.SortCallNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Book.FormCallNumber" class="control-label"></label>
-                <input asp-for="Book.FormCallNumber" class="form-control" />
-                <span asp-validation-for="Book.FormCallNumber" class="text-danger"></span>
+                <label asp-for="Store.Book.FormCallNumber" class="control-label"></label>
+                <input asp-for="Store.Book.FormCallNumber" class="form-control" />
+                <span asp-validation-for="Store.Book.FormCallNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Book.BookName" class="control-label"></label>
-                <input asp-for="Book.BookName" class="form-control" />
-                <span asp-validation-for="Book.BookName" class="text-danger"></span>
+                <label asp-for="Store.Book.BookName" class="control-label"></label>
+                <input asp-for="Store.Book.BookName" class="form-control" />
+                <span asp-validation-for="Store.Book.BookName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Book.PublishingHouse" class="control-label"></label>
-                <input asp-for="Book.PublishingHouse" class="form-control" />
-                <span asp-validation-for="Book.PublishingHouse" class="text-danger"></span>
+                <label asp-for="Store.Book.PublishingHouse" class="control-label"></label>
+                <input asp-for="Store.Book.PublishingHouse" class="form-control" />
+                <span asp-validation-for="Store.Book.PublishingHouse" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Book.Author" class="control-label"></label>
-                <input asp-for="Book.Author" class="form-control" />
-                <span asp-validation-for="Book.Author" class="text-danger"></span>
+                <label asp-for="Store.Book.Author" class="control-label"></label>
+                <input asp-for="Store.Book.Author" class="form-control" />
+                <span asp-validation-for="Store.Book.Author" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Book.PublicDate" class="control-label"></label>
-                <input asp-for="Book.PublicDate" class="form-control" />
-                <span asp-validation-for="Book.PublicDate" class="text-danger"></span>
+                <label asp-for="Store.Book.PublicDate" class="control-label"></label>
+                <input asp-for="Store.Book.PublicDate" class="form-control" />
+                <span asp-validation-for="Store.Book.PublicDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Book.EndDate" class="control-label"></label>
-                <input asp-for="Book.EndDate" class="form-control" />
-                <span asp-validation-for="Book.EndDate" class="text-danger"></span>
+                <label asp-for="Store.Book.EndDate" class="control-label"></label>
+                <input asp-for="Store.Book.EndDate" class="form-control" />
+                <span asp-validation-for="Store.Book.EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Book.Type" class="control-label"></label>
-                <input asp-for="Book.Type" class="form-control" />
-                <span asp-validation-for="Book.Type" class="text-danger"></span>
+                <label asp-for="Store.Book.Type" class="control-label"></label>
+                <input asp-for="Store.Book.Type" class="form-control" />
+                <span asp-validation-for="Store.Book.Type" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">如果中图法分类号和书次号冲突</label>
                 <select asp-for="Input.selectGroupView.IfConflict" asp-items="Model.Input.IfConflict" class="form-control"></select>
             </div>
             <hr/>
+            <input type="hidden" asp-for="Store.Location.LocationLevel" value="0" class="form-control" />
+            <input type="hidden" asp-for="Store.Location.LocationId" value="1" class="form-control" />
+            <input type="hidden" asp-for="Store.Location.LocationParent" value="0" class="form-control" />
+            <input type="hidden" asp-for="Store.Location.LocationName" value="0" class="form-control" />
             <div class="form-group">
                 <label class="control-label">校区</label>
                 <select asp-for="Input.selectGroupView.CampusId" asp-items="Model.Input.Campuses" class="form-control"></select>
@@ -85,11 +89,6 @@
                 <input asp-for="Store.StoreNum" class="form-control" />
                 <span asp-validation-for="Store.StoreNum" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Store.RemainNum" class="control-label"></label>
-                <input asp-for="Store.RemainNum" class="form-control" />
-                <span asp-validation-for="Store.RemainNum" class="text-danger"></span>
-            </div>
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -101,15 +100,6 @@
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
-
-@if (ViewData["AlertMessage"] != null)
-{
-    <script type="text/javascript">
-        window.onload = function () {
-            alert("@ViewData["AlertMessage"]");
-        };
-    </script>
-}
 
 @section Scripts
 {

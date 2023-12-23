@@ -24,12 +24,12 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         public class InputModel
         {
             public SelectGroupViewModel selectGroupView { get; set; } = new();
-            public List<SelectListItem> Campuses { get; set; }
-            public List<SelectListItem> Libraries { get; set; }
-            public List<SelectListItem> Floors { get; set; }
-            public List<SelectListItem> Bookshelves { get; set; }
-            public List<SelectListItem> Layers { get; set; }
-            public List<SelectListItem> IfConflict { get; set; }
+            public List<SelectListItem>? Campuses { get; set; }
+            public List<SelectListItem>? Libraries { get; set; }
+            public List<SelectListItem>? Floors { get; set; }
+            public List<SelectListItem>? Bookshelves { get; set; }
+            public List<SelectListItem>? Layers { get; set; }
+            public List<SelectListItem>? IfConflict { get; set; }
         }
         public class SelectGroupViewModel
         {
@@ -45,15 +45,11 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         public Store Store { get; set; } = default!;
 
         [BindProperty]
-        public Book Book { get; set; } = default!;
-
-        [BindProperty]
         public InputModel Input { get; set; } = new();
 
         public async Task<IActionResult> OnGetAsync()
         {
             await InitSelectGrop();
-            ViewData["AlertMessage"] = null;
             return Page();
         }
 
@@ -61,18 +57,57 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         public async Task<IActionResult> OnPostAsync()
         {
             await InitSelectGrop();
-            /*
-            if (!ModelState.IsValid || _context.Store == null || Store == null)
+            foreach (var item in ModelState)
             {
+                if (item.Value.Errors.Count != 0)
+                {
+                    Console.WriteLine(item.Key);
+                    foreach (var item2 in item.Value.Errors)
+                    {
+                        Console.WriteLine(item2.ErrorMessage);
+                    }
+                }
+            }
+            if (!ModelState.IsValid || _context.Store == null || Store == null ||
+                _context.Book == null || _context.Location == null || Store.Book == null)
+            {
+                ModelState.AddModelError(string.Empty, "Error occur");
                 return Page();
             }
-        
+
+            var loc = await GetLocation();
+            if (loc == null)
+            {
+                ModelState.AddModelError(string.Empty, "请输入完整地址");
+                return Page();
+            }
+
+            var oldBook = await GetBook();
+            if (oldBook == null) _context.Book.Add(Store.Book);
+            else
+            {
+                switch(Input.selectGroupView.IfConflict)
+                {
+                    case 0:
+                        ModelState.AddModelError(string.Empty, "中图法分类号和书次号冲突，不更新");
+                        return Page();
+                    case 1: Store.Book = oldBook; break;
+                    case 2: oldBook = Store.Book; break;
+                }
+            }
+
+            Store.Location = loc;
+            Store.RemainNum = Store.StoreNum;
+
             _context.Store.Add(Store);
-            await _context.SaveChangesAsync();
-            */
-            ViewData["AlertMessage"] = "aaaa";
-            //return RedirectToPage("./Index");
-            return Page();
+            try { await _context.SaveChangesAsync(); }
+            catch (DbUpdateConcurrencyException e)
+            {
+                ModelState.AddModelError(string.Empty, e.InnerException?.Message??e.Message);
+                return Page();
+            }
+
+            return RedirectToPage("./Index");
         }
 
         private async Task InitSelectGrop()
@@ -106,6 +141,25 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 new SelectListItem("修改图书信息并插入", "2"),
             };
         }
+
+        private async Task<Location?> GetLocation()
+        {
+            if (_context.Location == null || Input.selectGroupView.CampusId == 0 ||
+                Input.selectGroupView.LibraryId == 0 || Input.selectGroupView.FloorId == 0 ||
+                Input.selectGroupView.BookshelfId == 0 || Input.selectGroupView.LayerId == 0) return null;
+            var loc = await _context.Location.Where(l => l.LocationLevel == 4 &&
+                l.LocationId == Input.selectGroupView.LayerId).FirstOrDefaultAsync();
+            return loc;
+        }
+
+        private async Task<Book?> GetBook()
+        {
+            if (_context.Book == null || Store.Book == null) return null;
+            var b = await _context.Book.Where(b => b.SortCallNumber == Store.Book.SortCallNumber && b.FormCallNumber == Store.Book.FormCallNumber)
+                .FirstOrDefaultAsync();
+            return b;
+        }
+
         public async Task<JsonResult> OnGetParentAsync(int LocationLevel, int LocationParent)
         {
             if (_context.Location == null) return new JsonResult("_context.Location == null");
