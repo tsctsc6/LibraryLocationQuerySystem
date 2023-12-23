@@ -23,10 +23,10 @@
         <input type="submit" value="搜索" />
     </p>
     <p>
-        <input class="form-check-input" asp-for="SearchBookSortCallNumber" />
-        @Html.DisplayNameFor(m => m.SearchBookSortCallNumber)
-        <input class="form-check-input" asp-for="SearchBookFormCallNumber" />
-        @Html.DisplayNameFor(m => m.SearchBookFormCallNumber)
+        <input class="form-check-input" asp-for="SearchBookBookSortCallNumber" />
+        @Html.DisplayNameFor(m => m.SearchBookBookSortCallNumber)
+        <input class="form-check-input" asp-for="SearchBookBookFormCallNumber" />
+        @Html.DisplayNameFor(m => m.SearchBookBookFormCallNumber)
         <input class="form-check-input" asp-for="SearchBookName" />
         @Html.DisplayNameFor(m => m.SearchBookName)
         <input class="form-check-input" asp-for="SearchPublishingHouse" />
@@ -84,11 +84,11 @@
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
-                    <a asp-page="./Details" asp-route-SortCallNumber="@item.SortCallNumber" asp-route-FormCallNumber="@item.FormCallNumber">Details</a>
+                    <a asp-page="./Details" asp-route-BookSortCallNumber="@item.BookSortCallNumber" asp-route-BookFormCallNumber="@item.BookFormCallNumber">Details</a>
                     @if (@User.IsInRole("admin"))
                     {
-                        <a asp-page="./Edit" asp-route-SortCallNumber="@item.SortCallNumber" asp-route-FormCallNumber="@item.FormCallNumber">Edit</a>
-                        <a asp-page="./Delete" asp-route-SortCallNumber="@item.SortCallNumber" asp-route-FormCallNumber="@item.FormCallNumber">Delete</a>
+                        <a asp-page="./Edit" asp-route-BookSortCallNumber="@item.BookSortCallNumber" asp-route-BookFormCallNumber="@item.BookFormCallNumber">Edit</a>
+                        <a asp-page="./Delete" asp-route-BookSortCallNumber="@item.BookSortCallNumber" asp-route-BookFormCallNumber="@item.BookFormCallNumber">Delete</a>
                     }
             </td>
         </tr>

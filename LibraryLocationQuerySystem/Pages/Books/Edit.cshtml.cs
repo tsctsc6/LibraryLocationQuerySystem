@@ -23,14 +23,14 @@ namespace LibraryLocationQuerySystem.Pages.Books
         [BindProperty]
         public Book Book { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(string? SortCallNumber, string? FormCallNumber)
+        public async Task<IActionResult> OnGetAsync(string? BookSortCallNumber, string? BookFormCallNumber)
         {
-            if (SortCallNumber == null || FormCallNumber == null || _context.Book == null)
+            if (BookSortCallNumber == null || BookFormCallNumber == null || _context.Book == null)
             {
                 return NotFound();
             }
 
-            var book =  await _context.Book.FirstOrDefaultAsync(m => m.SortCallNumber == SortCallNumber && m.FormCallNumber == FormCallNumber);
+            var book =  await _context.Book.FirstOrDefaultAsync(m => m.BookSortCallNumber == BookSortCallNumber && m.BookFormCallNumber == BookFormCallNumber);
             if (book == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace LibraryLocationQuerySystem.Pages.Books
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BookExists(Book.SortCallNumber))
+                if (!BookExists(Book.BookSortCallNumber))
                 {
                     return NotFound();
                 }
@@ -71,7 +71,7 @@ namespace LibraryLocationQuerySystem.Pages.Books
 
         private bool BookExists(string id)
         {
-          return (_context.Book?.Any(e => e.SortCallNumber == id)).GetValueOrDefault();
+          return (_context.Book?.Any(e => e.BookSortCallNumber == id)).GetValueOrDefault();
         }
     }
 }

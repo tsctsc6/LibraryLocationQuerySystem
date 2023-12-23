@@ -157,7 +157,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         private async Task<Book?> GetBook()
         {
             if (_context.Book == null || Store.Book == null) return null;
-            var b = await _context.Book.Where(b => b.SortCallNumber == Store.Book.SortCallNumber && b.FormCallNumber == Store.Book.FormCallNumber)
+            var b = await _context.Book.Where(b => b.BookSortCallNumber == Store.Book.BookSortCallNumber && b.BookFormCallNumber == Store.Book.BookFormCallNumber)
                 .FirstOrDefaultAsync();
             return b;
         }

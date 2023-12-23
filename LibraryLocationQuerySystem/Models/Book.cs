@@ -5,20 +5,20 @@ using System.Text.Json.Serialization;
 
 namespace LibraryLocationQuerySystem.Models
 {
-    [PrimaryKey("SortCallNumber", "FormCallNumber")]
+    [PrimaryKey("BookSortCallNumber", "BookFormCallNumber")]
     public class Book
     {
         [StringLength(15)]
         [RegularExpression(@"[0-9a-zA-Z-\.\(\)\s]+")]
         [Display(Name = "中图法分类号")]
         [Column(TypeName = "nchar(15)")]
-        public string SortCallNumber { get; set; }
+        public string BookSortCallNumber { get; set; }
 
         [StringLength(15)]
         [RegularExpression(@"[0-9a-zA-Z-\.\(\)\s]+")]
         [Display(Name = "书次号")]
         [Column(TypeName = "nchar(15)")]
-        public string FormCallNumber { get; set; }
+        public string BookFormCallNumber { get; set; }
 
         [Required]
         [StringLength(200)]

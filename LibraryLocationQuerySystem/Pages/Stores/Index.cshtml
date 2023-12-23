@@ -17,10 +17,10 @@
         <input type="submit" value="搜索" />
     </p>
     <p>
-        <input class="form-check-input" asp-for="searchOption.SearchBookSortCallNumber" />
-        @Html.DisplayNameFor(m => m.searchOption.SearchBookSortCallNumber)
-        <input class="form-check-input" asp-for="searchOption.SearchBookFormCallNumber" />
-        @Html.DisplayNameFor(m => m.searchOption.SearchBookFormCallNumber)
+        <input class="form-check-input" asp-for="searchOption.SearchBookBookSortCallNumber" />
+        @Html.DisplayNameFor(m => m.searchOption.SearchBookBookSortCallNumber)
+        <input class="form-check-input" asp-for="searchOption.SearchBookBookFormCallNumber" />
+        @Html.DisplayNameFor(m => m.searchOption.SearchBookBookFormCallNumber)
         <input class="form-check-input" asp-for="searchOption.SearchBookName" />
         @Html.DisplayNameFor(m => m.searchOption.SearchBookName)
         <input class="form-check-input" asp-for="searchOption.SearchPublishingHouse" />
@@ -57,10 +57,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StoreList[0].Book.SortCallNumber)
+                @Html.DisplayNameFor(model => model.StoreList[0].Book.BookSortCallNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StoreList[0].Book.FormCallNumber)
+                @Html.DisplayNameFor(model => model.StoreList[0].Book.BookFormCallNumber)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StoreList[0].Book.BookName)
@@ -87,10 +87,10 @@
 @foreach (var item in Model.StoreList) {
         <tr>
                 <td>
-                    @Html.DisplayFor(model => model.StoreList[0].Book.SortCallNumber)
+                    @Html.DisplayFor(model => model.StoreList[0].Book.BookSortCallNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.StoreList[0].Book.FormCallNumber)
+                    @Html.DisplayFor(model => model.StoreList[0].Book.BookFormCallNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(model => model.StoreList[0].Book.BookName)

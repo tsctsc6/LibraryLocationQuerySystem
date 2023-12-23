@@ -14,17 +14,17 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Book.SortCallNumber" />
-            <input type="hidden" asp-for="Book.FormCallNumber" />
+            <input type="hidden" asp-for="Book.BookSortCallNumber" />
+            <input type="hidden" asp-for="Book.BookFormCallNumber" />
             <div class="form-group">
-                <label asp-for="Book.SortCallNumber" class="control-label"></label>
-                <p>@Html.DisplayFor(model => model.Book.SortCallNumber)</p>
-                <span asp-validation-for="Book.SortCallNumber" class="text-danger"></span>
+                <label asp-for="Book.BookSortCallNumber" class="control-label"></label>
+                <p>@Html.DisplayFor(model => model.Book.BookSortCallNumber)</p>
+                <span asp-validation-for="Book.BookSortCallNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Book.FormCallNumber" class="control-label"></label>
-                <p>@Html.DisplayFor(model => model.Book.FormCallNumber)</p>
-                <span asp-validation-for="Book.FormCallNumber" class="text-danger"></span>
+                <label asp-for="Book.BookFormCallNumber" class="control-label"></label>
+                <p>@Html.DisplayFor(model => model.Book.BookFormCallNumber)</p>
+                <span asp-validation-for="Book.BookFormCallNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Book.BookName" class="control-label"></label>

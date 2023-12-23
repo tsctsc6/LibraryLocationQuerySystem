@@ -22,14 +22,14 @@ namespace LibraryLocationQuerySystem.Pages.Books
         [BindProperty]
       public Book Book { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(string? SortCallNumber, string? FormCallNumber)
+        public async Task<IActionResult> OnGetAsync(string? BookSortCallNumber, string? BookFormCallNumber)
         {
-            if (SortCallNumber == null || FormCallNumber == null || _context.Book == null)
+            if (BookSortCallNumber == null || BookFormCallNumber == null || _context.Book == null)
             {
                 return NotFound();
             }
 
-            var book = await _context.Book.FirstOrDefaultAsync(m => m.SortCallNumber == SortCallNumber && m.FormCallNumber == FormCallNumber);
+            var book = await _context.Book.FirstOrDefaultAsync(m => m.BookSortCallNumber == BookSortCallNumber && m.BookFormCallNumber == BookFormCallNumber);
 
             if (book == null)
             {
@@ -42,13 +42,13 @@ namespace LibraryLocationQuerySystem.Pages.Books
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string? SortCallNumber, string? FormCallNumber)
+        public async Task<IActionResult> OnPostAsync(string? BookSortCallNumber, string? BookFormCallNumber)
         {
-            if (SortCallNumber == null || FormCallNumber == null || _context.Book == null)
+            if (BookSortCallNumber == null || BookFormCallNumber == null || _context.Book == null)
             {
                 return NotFound();
             }
-            var book = await _context.Book.FirstOrDefaultAsync(m => m.SortCallNumber == SortCallNumber && m.FormCallNumber == FormCallNumber);
+            var book = await _context.Book.FirstOrDefaultAsync(m => m.BookSortCallNumber == BookSortCallNumber && m.BookFormCallNumber == BookFormCallNumber);
 
             if (book != null)
             {

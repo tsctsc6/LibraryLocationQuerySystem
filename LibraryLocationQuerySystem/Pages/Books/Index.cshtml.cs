@@ -20,11 +20,11 @@ namespace LibraryLocationQuerySystem.Pages.Books
 
 		[BindProperty(SupportsGet = true)]
         [DisplayName("搜索中图法分类号")]
-		public bool SearchBookSortCallNumber { get; set; }
+		public bool SearchBookBookSortCallNumber { get; set; }
 
 		[BindProperty(SupportsGet = true)]
 		[DisplayName("搜索书次号")]
-		public bool SearchBookFormCallNumber { get; set; }
+		public bool SearchBookBookFormCallNumber { get; set; }
 
 		[BindProperty(SupportsGet = true)]
 		[DisplayName("搜索书名")]
@@ -63,8 +63,8 @@ namespace LibraryLocationQuerySystem.Pages.Books
 			if (!string.IsNullOrEmpty(SearchString))
             {
                 _Book = _Book.Where(b => 
-                    (SearchBookSortCallNumber && b.SortCallNumber.Contains(SearchString)) ||
-                    (SearchBookFormCallNumber && b.FormCallNumber.Contains(SearchString)) ||
+                    (SearchBookBookSortCallNumber && b.BookSortCallNumber.Contains(SearchString)) ||
+                    (SearchBookBookFormCallNumber && b.BookFormCallNumber.Contains(SearchString)) ||
                     (SearchBookName && b.BookName.Contains(SearchString)) ||
 					(SearchPublishingHouse && b.PublishingHouse.Contains(SearchString)) ||
 					(SearchBookAuthor && b.Author.Contains(SearchString))

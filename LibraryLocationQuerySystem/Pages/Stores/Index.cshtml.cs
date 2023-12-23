@@ -30,10 +30,10 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             public string SearchString;
 
             [DisplayName("搜索中图法分类号")]
-            public bool SearchBookSortCallNumber { get; set; }
+            public bool SearchBookBookSortCallNumber { get; set; }
 
             [DisplayName("搜索书次号")]
-            public bool SearchBookFormCallNumber { get; set; }
+            public bool SearchBookBookFormCallNumber { get; set; }
 
             [DisplayName("搜索书名")]
             public bool SearchBookName { get; set; } = true;

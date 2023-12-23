@@ -1,10 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace LibraryLocationQuerySystem.Models
 {
     public class Store
     {
+        [StringLength(15)]
+        [RegularExpression(@"[0-9a-zA-Z-\.\(\)]")]
+        [Display(Name = "中图法分类号")]
+        [Column(TypeName = "nchar(15)")]
+        public string BookSortCallNumber { get; set; }
+
+        [StringLength(15)]
+        [RegularExpression(@"[0-9a-zA-Z-\.\(\)]")]
+        [Display(Name = "书次号")]
+        [Column(TypeName = "nchar(15)")]
+        public string BookFormCallNumber { get; set; }
+
+        public byte LocationLevel { get; set; }
+
+        public int LocationId { get; set; }
+
         public DateTime StoreDate { get; set; }
 
         [Required]
