@@ -57,29 +57,59 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Store[0].StoreDate)
+                @Html.DisplayNameFor(model => model.StoreList[0].Book.SortCallNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Store[0].StoreNum)
+                @Html.DisplayNameFor(model => model.StoreList[0].Book.FormCallNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Store[0].RemainNum)
+                @Html.DisplayNameFor(model => model.StoreList[0].Book.BookName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreList[0].Book.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreList[0].Book.PublishingHouse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreList[0].Book.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreList[0].StoreNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StoreList[0].RemainNum)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Store) {
+@foreach (var item in Model.StoreList) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoreDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoreNum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RemainNum)
-            </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreList[0].Book.SortCallNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreList[0].Book.FormCallNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreList[0].Book.BookName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreList[0].Book.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreList[0].Book.PublishingHouse)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreList[0].Book.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreList[0].StoreNum)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StoreList[0].RemainNum)
+                </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |

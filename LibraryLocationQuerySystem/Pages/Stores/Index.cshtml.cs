@@ -44,6 +44,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             [DisplayName("搜索作者")]
             public bool SearchBookAuthor { get; set; }
 
+            [BindProperty(SupportsGet = true)]
             public SelectGroupViewModel selectGroupView { get; set; } = new();
             public List<SelectListItem> Campuses { get; set; }
             public List<SelectListItem> Libraries { get; set; }
@@ -61,12 +62,12 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             public short LayerId { get; set; }
         }
 
-        public IList<Store> Store { get;set; } = default!;
-        public IList<Book> BookList { get; set; } = default!;
+        public IList<Store> StoreList { get; set; } = default!;
 
         [BindProperty(SupportsGet = true)]
         public SearchOptionModel searchOption { get; set; } = new();
 
+        [BindProperty(SupportsGet = true)]
         public PageManager pm { get; set; } = new() { NumPerPage = 20 };
         [BindProperty(SupportsGet = true)]
         [Range(0, int.MaxValue)]
@@ -75,17 +76,21 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         public async Task<IActionResult> OnGetAsync()
         {
             await InitSelectGrop();
-            Store = new List<Store>();
-            await BookInLocation();
+            await StoreInLocation();
             return Page();
         }
 
-        private async Task BookInLocation()
+        private async Task StoreInLocation()
         {
             if (_context.Location == null || _context.Book == null || _context.Store == null) return;
             if (searchOption.selectGroupView.CampusId == 0)
             {
-                BookList = await _context.Book.ToListAsync();
+                StoreList = await _context.Store.ToListAsync();
+
+                //var s = await _context.Store.FirstOrDefaultAsync();
+                var b = await _context.Book.FirstOrDefaultAsync();//!
+                //var l = await _context.Location.Where(l => l.LocationLevel == 4 && l.LocationId == 1).FirstOrDefaultAsync();
+
                 return;
             }
             List<Location> LocationList = new();
@@ -119,10 +124,13 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                     l.LocationId == searchOption.selectGroupView.LayerId).FirstOrDefaultAsync();
                 LocationList = await GetEndLocations(loc);
             }
-            BookList = new List<Book>();
+            StoreList = new List<Store>();
+            var s = await _context.Store.FirstOrDefaultAsync();//!
             foreach (var item in LocationList)
             {
-                BookList.Concat(item.Books);
+                StoreList = StoreList.Concat(item.Stores).ToList();
+                var b = await _context.Book.FirstOrDefaultAsync(); //!
+                
             }
         }
 
@@ -132,7 +140,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             if (location == null) return list;
             if (location.LocationLevel == 4)
             {
-                list.Append(location);
+                list.Add(location);
                 return list;
             }
             if (_context.Location == null) return list;
@@ -140,7 +148,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 l.LocationParent == location.LocationId).ToListAsync();
             foreach (var item in _list)
             {
-                list.Concat(await GetEndLocations(item));
+                list = list.Concat(await GetEndLocations(item)).ToList();
             }
             return list;
         }

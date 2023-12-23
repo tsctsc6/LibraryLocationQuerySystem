@@ -57,6 +57,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         public async Task<IActionResult> OnPostAsync()
         {
             await InitSelectGrop();
+            /*
             foreach (var item in ModelState)
             {
                 if (item.Value.Errors.Count != 0)
@@ -68,6 +69,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                     }
                 }
             }
+            */
             if (!ModelState.IsValid || _context.Store == null || Store == null ||
                 _context.Book == null || _context.Location == null || Store.Book == null)
             {
