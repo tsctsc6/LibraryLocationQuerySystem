@@ -84,6 +84,10 @@
                 <select asp-for="Input.selectGroupView.LayerId" asp-items="Model.Input.Layers" class="form-control"></select>
             </div>
             <hr />
+            <input type="hidden" asp-for="Store.BookSortCallNumber" value="0" class="form-control" />
+            <input type="hidden" asp-for="Store.BookFormCallNumber" value="0" class="form-control" />
+            <input type="hidden" asp-for="Store.LocationLevel" value="0" class="form-control" />
+            <input type="hidden" asp-for="Store.LocationId" value="0" class="form-control" />
             <div class="form-group">
                 <label asp-for="Store.StoreNum" class="control-label"></label>
                 <input asp-for="Store.StoreNum" class="form-control" />

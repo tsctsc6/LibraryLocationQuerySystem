@@ -9,6 +9,7 @@ using LibraryLocationQuerySystem.Data;
 using LibraryLocationQuerySystem.Models;
 using static LibraryLocationQuerySystem.Pages.Stores.IndexModel;
 using Microsoft.EntityFrameworkCore;
+using LibraryLocationQuerySystem.Utilities;
 
 namespace LibraryLocationQuerySystem.Pages.Stores
 {

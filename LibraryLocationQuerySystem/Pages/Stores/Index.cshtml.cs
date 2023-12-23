@@ -77,6 +77,12 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         {
             await InitSelectGrop();
             await StoreInLocation();
+            if (_context.Book == null) return Page();
+            foreach(var item in StoreList)
+            {
+                _ = await _context.Book.Where(b => b.BookSortCallNumber == item.BookSortCallNumber &&
+                    b.BookFormCallNumber == item.BookFormCallNumber).FirstOrDefaultAsync();
+            }
             return Page();
         }
 
@@ -86,11 +92,6 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             if (searchOption.selectGroupView.CampusId == 0)
             {
                 StoreList = await _context.Store.ToListAsync();
-
-                //var s = await _context.Store.FirstOrDefaultAsync();
-                var b = await _context.Book.FirstOrDefaultAsync();//!
-                //var l = await _context.Location.Where(l => l.LocationLevel == 4 && l.LocationId == 1).FirstOrDefaultAsync();
-
                 return;
             }
             List<Location> LocationList = new();
@@ -129,8 +130,6 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             foreach (var item in LocationList)
             {
                 StoreList = StoreList.Concat(item.Stores).ToList();
-                var b = await _context.Book.FirstOrDefaultAsync(); //!
-                
             }
         }
 
