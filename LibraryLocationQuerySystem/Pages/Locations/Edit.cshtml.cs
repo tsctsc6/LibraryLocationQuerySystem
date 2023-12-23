@@ -23,7 +23,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
         [BindProperty]
         public Location Location { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(byte? LocationLevel, short? LocationId)
+        public async Task<IActionResult> OnGetAsync(byte? LocationLevel, int? LocationId)
         {
             if (LocationLevel == null || LocationId == null || _context.Location == null)
             {

@@ -2,6 +2,7 @@ using Humanizer.Bytes;
 using LibraryLocationQuerySystem.Data;
 using LibraryLocationQuerySystem.Migrations;
 using LibraryLocationQuerySystem.Models;
+using LibraryLocationQuerySystem.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,14 +16,14 @@ namespace LibraryLocationQuerySystem.Pages.Locations
     {
 		public class SelectGroupView
         {
-			public short CampusId { get; set; }
-			public short LibraryId { get; set; }
-			public short FloorId { get; set; }
-			public short BookshelfId { get; set; }
-			//public short LayerId { get; set; }
-		}
+			public int CampusId { get; set; }
+			public int LibraryId { get; set; }
+			public int FloorId { get; set; }
+			public int BookshelfId { get; set; }
+            //public int LayerId { get; set; }
+        }
 
-		private readonly StoreManagerDbContext _context;
+        private readonly StoreManagerDbContext _context;
 
 		[BindProperty(SupportsGet = true)]
 		public SelectGroupView selectGroupView { get; set; } = new();
@@ -48,6 +49,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
         public async Task<IActionResult> OnPostAsync()
 		{
             await InitSelectGrop();
+            //PrintModelState.printErrorMessage(ModelState);
             if (!ModelState.IsValid || _context.Location == null || Location == null)
             {
                 return Page();

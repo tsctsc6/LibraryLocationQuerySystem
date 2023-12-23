@@ -33,11 +33,11 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         }
         public class SelectGroupViewModel
         {
-            public short CampusId { get; set; }
-            public short LibraryId { get; set; }
-            public short FloorId { get; set; }
-            public short BookshelfId { get; set; }
-            public short LayerId { get; set; }
+            public int CampusId { get; set; }
+            public int LibraryId { get; set; }
+            public int FloorId { get; set; }
+            public int BookshelfId { get; set; }
+            public int LayerId { get; set; }
             public int IfConflict { get; set; }
         }
 
@@ -57,19 +57,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         public async Task<IActionResult> OnPostAsync()
         {
             await InitSelectGrop();
-            /*
-            foreach (var item in ModelState)
-            {
-                if (item.Value.Errors.Count != 0)
-                {
-                    Console.WriteLine(item.Key);
-                    foreach (var item2 in item.Value.Errors)
-                    {
-                        Console.WriteLine(item2.ErrorMessage);
-                    }
-                }
-            }
-            */
+            //PrintModelState.printErrorMessage(ModelState);
             if (!ModelState.IsValid || _context.Store == null || Store == null ||
                 _context.Book == null || _context.Location == null || Store.Book == null)
             {

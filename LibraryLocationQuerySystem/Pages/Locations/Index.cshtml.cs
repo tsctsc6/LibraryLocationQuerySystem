@@ -18,12 +18,12 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 
         public string LocationPath { get; set; } = "/ ";
         public byte PreviousLevel { get; set; }
-        public short PreviousLevelId { get; set; }
+        public int PreviousLevelId { get; set; }
 
 
 		public IList<Location> Location { get; set; } = default!;
 
-        public async Task OnGetAsync(byte? LocationLevel, short? LocationParentId)
+        public async Task OnGetAsync(byte? LocationLevel, int? LocationParentId)
         {
             if (_context.Location == null) return;
             SetPreviousLevel(LocationLevel, LocationParentId);
@@ -45,7 +45,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 			}
 			else
             {
-                await SetLocationPath((byte)LocationLevel, (short)LocationParentId);
+                await SetLocationPath((byte)LocationLevel, (int)LocationParentId);
 				Location = await _Location.Where(l => l.LocationLevel == LocationLevel && l.LocationParent == LocationParentId).ToListAsync();
 				return;
 			}
@@ -72,7 +72,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             }
             LocationPath = sb.ToString();
 		}
-        private void SetPreviousLevel(byte? LocationLevel, short? LocationParentId)
+        private void SetPreviousLevel(byte? LocationLevel, int? LocationParentId)
         {
 			if (LocationLevel == null || LocationLevel <= 0 || LocationParentId == null)
             {
@@ -83,11 +83,11 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 			if (LocationLevel > 4)
             {
                 PreviousLevel = 4;
-                PreviousLevelId = (short)LocationParentId;
+                PreviousLevelId = (int)LocationParentId;
                 return;
 			}
             PreviousLevel = (byte)(LocationLevel - 1);
-			PreviousLevelId = (short)LocationParentId;
+			PreviousLevelId = (int)LocationParentId;
 		}
 	}
 }
