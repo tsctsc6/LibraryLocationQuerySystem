@@ -10,6 +10,49 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+<form style="margin:0px; display:inline" class="form-inline" method="get">
+    <p>
+        <input type="text" asp-for="searchOption.SearchString" />
+        <input type="submit" value="搜索" />
+    </p>
+    <p>
+        <input class="form-check-input" asp-for="searchOption.SearchBookSortCallNumber" />
+        @Html.DisplayNameFor(m => m.searchOption.SearchBookSortCallNumber)
+        <input class="form-check-input" asp-for="searchOption.SearchBookFormCallNumber" />
+        @Html.DisplayNameFor(m => m.searchOption.SearchBookFormCallNumber)
+        <input class="form-check-input" asp-for="searchOption.SearchBookName" />
+        @Html.DisplayNameFor(m => m.searchOption.SearchBookName)
+        <input class="form-check-input" asp-for="searchOption.SearchPublishingHouse" />
+        @Html.DisplayNameFor(m => m.searchOption.SearchPublishingHouse)
+        <input class="form-check-input" asp-for="searchOption.SearchBookAuthor" />
+        @Html.DisplayNameFor(m => m.searchOption.SearchBookAuthor)
+    </p>
+    <div class="form-group">
+        <label class="control-label">校区</label>
+        <select asp-for="searchOption.selectGroupView.CampusId" asp-items="Model.searchOption.Campuses" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">图书馆/图书室</label>
+        <select asp-for="searchOption.selectGroupView.LibraryId" asp-items="Model.searchOption.Libraries" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">楼层</label>
+        <select asp-for="searchOption.selectGroupView.FloorId" asp-items="Model.searchOption.Floors" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">书架</label>
+        <select asp-for="searchOption.selectGroupView.BookshelfId" asp-items="Model.searchOption.Bookshelves" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">书架层</label>
+        <select asp-for="searchOption.selectGroupView.LayerId" asp-items="Model.searchOption.Layers" class="form-control"></select>
+    </div>
+</form>
+<p>
+    共 @Html.DisplayFor(model => model.pm.ResNum) 个结果，@Html.DisplayFor(model => model.pm.StartIndex)~@Html.DisplayFor(model => model.pm.EndIndex)
+</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -46,3 +89,93 @@
 }
     </tbody>
 </table>
+
+<div>
+    @if (@Model.pm.PreviousPage != @Model.pm.CurrentPage)
+    {
+        <a asp-page="./Index" asp-route-pageNum="@Model.pm.PreviousPage">上一页</a>
+    }
+    <form style="margin:0px; display:inline" class="form-inline" method="get">
+        页码：<input type="number" asp-for="pageNum" />
+        <input type="submit" value="跳转" />
+    </form>
+    @if (@Model.pm.PreviousPage != @Model.pm.CurrentPage)
+    {
+        <a asp-page="./Index" asp-route-pageNum="@Model.pm.NextPage">下一页</a>
+    }
+</div>
+
+
+@section Scripts
+    {
+    <script>
+        function OnCampusChange() {
+            var LocationId = $(this).val();
+            console.log(`Campus:${LocationId}`);
+            $("#searchOption_selectGroupView_LibraryId").empty();
+            $("#searchOption_selectGroupView_LibraryId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=1&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#searchOption_selectGroupView_LibraryId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                    $("#searchOption_selectGroupView_LibraryId").change();
+                });
+            }
+            else { $("#searchOption_selectGroupView_LibraryId").change(); }
+        };
+
+        function OnLibraryChange() {
+            var LocationId = $(this).val();
+            console.log(`Library:${LocationId}`);
+            $("#searchOption_selectGroupView_FloorId").empty();
+            $("#searchOption_selectGroupView_FloorId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=2&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#searchOption_selectGroupView_FloorId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                    $("#searchOption_selectGroupView_FloorId").change();
+                });
+            }
+            else { $("#searchOption_selectGroupView_FloorId").change(); }
+        };
+
+        function OnFloorChange() {
+            var LocationId = $(this).val();
+            console.log(`Floor:${LocationId}`);
+            $("#searchOption_selectGroupView_BookshelfId").empty();
+            $("#searchOption_selectGroupView_BookshelfId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=3&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#searchOption_selectGroupView_BookshelfId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                    $("#searchOption_selectGroupView_BookshelfId").change();
+                });
+            }
+            else { $("#searchOption_selectGroupView_BookshelfId").change(); }
+        };
+
+        function OnBookshelfChange() {
+            var LocationId = $(this).val();
+            console.log(`Bookshelf:${LocationId}`);
+            $("#searchOption_selectGroupView_LayerId").empty();
+            $("#searchOption_selectGroupView_LayerId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=4&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#searchOption_selectGroupView_LayerId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                });
+            }
+        };
+
+        $(function () {
+            $("#searchOption_selectGroupView_CampusId").on("change", OnCampusChange);
+            $("#searchOption_selectGroupView_LibraryId").on("change", OnLibraryChange);
+            $("#searchOption_selectGroupView_FloorId").on("change", OnFloorChange);
+            $("#searchOption_selectGroupView_BookshelfId").on("change", OnBookshelfChange);
+        });
+    </script>
+}
