@@ -27,7 +27,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 
         public class SearchOptionModel
         {
-            public string SearchString;
+            public string SearchString { get; set; }
 
             [DisplayName("搜索中图法分类号")]
             public bool SearchBookBookSortCallNumber { get; set; }
@@ -83,6 +83,16 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 _ = await _context.Book.Where(b => b.BookSortCallNumber == item.BookSortCallNumber &&
                     b.BookFormCallNumber == item.BookFormCallNumber).FirstOrDefaultAsync();
             }
+            if (!string.IsNullOrEmpty(searchOption.SearchString))
+            {
+                StoreList = StoreList.Where(b =>
+                    (searchOption.SearchBookBookSortCallNumber && b.BookSortCallNumber.Contains(searchOption.SearchString)) ||
+                    (searchOption.SearchBookBookFormCallNumber && b.BookFormCallNumber.Contains(searchOption.SearchString)) ||
+                    (searchOption.SearchBookName && b.Book.BookName.Contains(searchOption.SearchString)) ||
+                    (searchOption.SearchPublishingHouse && b.Book.PublishingHouse.Contains(searchOption.SearchString)) ||
+                    (searchOption.SearchBookAuthor && b.Book.Author.Contains(searchOption.SearchString))
+                ).ToList();
+            }
             return Page();
         }
 
@@ -126,9 +136,11 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 LocationList = await GetEndLocations(loc);
             }
             StoreList = new List<Store>();
-            var s = await _context.Store.FirstOrDefaultAsync();//!
             foreach (var item in LocationList)
             {
+                if (_context.Store == null) throw new ArgumentNullException("_context.Store == null");
+                _ = await _context.Store.Where(s => s.LocationLevel == item.LocationLevel &&
+                        s.LocationId == item.LocationId).ToListAsync();
                 StoreList = StoreList.Concat(item.Stores).ToList();
             }
         }
