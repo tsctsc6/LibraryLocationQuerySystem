@@ -51,7 +51,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 			}
         }
 
-        private async Task SetLocationPath(byte LocationLevel, short LocationParentId)
+        private async Task SetLocationPath(byte LocationLevel, int LocationParentId)
         {
 			if (_context.Location == null) return;
 			List<string> strings = new();

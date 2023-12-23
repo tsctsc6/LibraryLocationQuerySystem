@@ -70,7 +70,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             return RedirectToPage("./Index");
         }
 
-        private bool LocationExists(byte LocationLevel, short LocationId)
+        private bool LocationExists(byte LocationLevel, int LocationId)
         {
             return (_context.Location?.Any(m => m.LocationLevel == LocationLevel &&
                 m.LocationId == LocationId)).GetValueOrDefault();
