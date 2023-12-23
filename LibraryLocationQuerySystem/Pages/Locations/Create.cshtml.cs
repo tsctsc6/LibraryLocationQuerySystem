@@ -54,6 +54,8 @@ namespace LibraryLocationQuerySystem.Pages.Locations
                 return Page();
             }
             SetLocationLevelAndParent();
+            do { Location.GenLocationid(); }
+            while (await _context.Location.Where(l => l.LocationId == Location.LocationId).CountAsync() != 0);
             await _context.Location.AddAsync(Location);
 			try { await _context.SaveChangesAsync(); }
 			catch (DbUpdateException e)
