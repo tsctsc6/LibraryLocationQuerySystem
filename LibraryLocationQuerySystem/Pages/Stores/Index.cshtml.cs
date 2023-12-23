@@ -62,6 +62,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         }
 
         public IList<Store> Store { get;set; } = default!;
+        public IList<Book> Book { get; set; } = default!;
 
         [BindProperty(SupportsGet = true)]
         public SearchOptionModel searchOption { get; set; } = new();
@@ -75,7 +76,73 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         {
             await InitSelectGrop();
             Store = new List<Store>();
+            await BookInLocation();
             return Page();
+        }
+
+        private async Task BookInLocation()
+        {
+            if (_context.Location == null || _context.Book == null || _context.Store == null) return;
+            if (searchOption.selectGroupView.CampusId == 0)
+            {
+                Book = await _context.Book.ToListAsync();
+                return;
+            }
+            List<Location> LocationList = new();
+            if (searchOption.selectGroupView.LibraryId == 0)
+            {
+                var loc = await _context.Location.Where(l => l.LocationLevel == 0 &&
+                    l.LocationId == searchOption.selectGroupView.CampusId).FirstOrDefaultAsync();
+                LocationList = await GetEndLocations(loc);
+            }
+            else if (searchOption.selectGroupView.FloorId == 0)
+            {
+                var loc = await _context.Location.Where(l => l.LocationLevel == 1 &&
+                    l.LocationId == searchOption.selectGroupView.LibraryId).FirstOrDefaultAsync();
+                LocationList = await GetEndLocations(loc);
+            }
+            else if (searchOption.selectGroupView.BookshelfId == 0)
+            {
+                var loc = await _context.Location.Where(l => l.LocationLevel == 2 &&
+                    l.LocationId == searchOption.selectGroupView.FloorId).FirstOrDefaultAsync();
+                LocationList = await GetEndLocations(loc);
+            }
+            else if (searchOption.selectGroupView.LayerId == 0)
+            {
+                var loc = await _context.Location.Where(l => l.LocationLevel == 3 &&
+                    l.LocationId == searchOption.selectGroupView.BookshelfId).FirstOrDefaultAsync();
+                LocationList = await GetEndLocations(loc);
+            }
+            else
+            {
+                var loc = await _context.Location.Where(l => l.LocationLevel == 4 &&
+                    l.LocationId == searchOption.selectGroupView.LayerId).FirstOrDefaultAsync();
+                LocationList = await GetEndLocations(loc);
+            }
+            Book = new List<Book>();
+            foreach (var item in LocationList)
+            {
+                Book.Concat(item.Books);
+            }
+        }
+
+        private async Task<List<Location>> GetEndLocations(Location? location)
+        {
+            List<Location> list = new();
+            if (location == null) return list;
+            if (location.LocationLevel == 4)
+            {
+                list.Append(location);
+                return list;
+            }
+            if (_context.Location == null) return list;
+            var _list = await _context.Location.Where(l => l.LocationLevel == location.LocationLevel + 1 &&
+                l.LocationParent == location.LocationId).ToListAsync();
+            foreach (var item in _list)
+            {
+                list.Concat(await GetEndLocations(item));
+            }
+            return list;
         }
 
         private async Task InitSelectGrop()
