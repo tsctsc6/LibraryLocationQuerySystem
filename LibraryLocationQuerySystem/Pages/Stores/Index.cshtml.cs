@@ -100,7 +100,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                               new { s.BookSortCallNumber, s.BookFormCallNumber }
                               select s;
             StoreList = await _StoreList2.ToArrayAsync();
-            _ = await _BookList.ToArrayAsync();
+            _ = await _BookList.ToListAsync();
             return Page();
         }
 
