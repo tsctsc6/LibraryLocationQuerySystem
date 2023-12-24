@@ -83,7 +83,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                         ModelState.AddModelError(string.Empty, "中图法分类号和书次号冲突，不更新");
                         return Page();
                     case 1: Store.Book = oldBook; break;
-                    case 2: oldBook = Store.Book; break;
+                    case 2: break;
                 }
             }
 

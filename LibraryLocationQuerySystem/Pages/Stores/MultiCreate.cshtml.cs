@@ -11,6 +11,8 @@ using static LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts.Mult
 using Microsoft.EntityFrameworkCore;
 using LibraryLocationQuerySystem.Utilities;
 using OfficeOpenXml;
+using Microsoft.IdentityModel.Tokens;
+using Humanizer.Bytes;
 
 namespace LibraryLocationQuerySystem.Pages.Stores
 {
@@ -57,9 +59,9 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         public async Task<IActionResult> OnPostAsync()
         {
             await InitSelectGrop();
-            if (_context.Store == null)
+            if (_context.Store == null || _context.Book == null)
             {
-                ModelState.AddModelError(string.Empty, "_context.Store == null");
+                ModelState.AddModelError(string.Empty, "_context.Store == null || _context.Book == null");
                 return Page();
             }
             if (!ModelState.IsValid)
@@ -75,7 +77,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 ModelState.AddModelError(string.Empty, "Please correct the form.");
                 return Page();
             }
-            var loc = GetLocation();
+            var loc = await GetLocation();
             if (loc == null)
             {
                 ModelState.AddModelError(string.Empty, "请选择具体的地点");
@@ -94,19 +96,152 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                     }
                     var maxAddress = worksheet.Dimension.Address.Split(":");
                     int maxRow = (int)OpenXmlHelper.AddressSplitRow(maxAddress[1]);
-                    var cs = worksheet.Cells[2, 1, maxRow, 8];
-                    foreach(var c in cs)
+                    for (int i = 2; i <= maxRow; i++)
                     {
-                        Console.WriteLine(c.Value.ToString());
+                        Store s = new();
+                        s.Book = new();
+                        Book? oldBook = null;
+                        s.Location = loc;
+
+                        try
+                        {
+                            s.Book.BookSortCallNumber = worksheet.Cells[i, 5]?.Value?.ToString()?.Split('/')[0];
+                            s.Book.BookFormCallNumber = worksheet.Cells[i, 5]?.Value?.ToString()?.Split('/')[1];
+                        }
+                        catch (Exception e)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 5]处格式错误: {e.Message}");
+                            continue;
+                        }
+                        if (s.Book.BookSortCallNumber == null || s.Book.BookFormCallNumber == null)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 5]处格式错误: null");
+                            continue;
+                        }
+
+                        if (selectGroupView.IfConflict == 1)
+                        {
+                            oldBook = await GetBook(s.Book.BookSortCallNumber, s.Book.BookFormCallNumber);
+                            if (oldBook != null) { s.Book = oldBook; goto A; }
+                        }
+
+                        try
+                        {
+                            s.Book.BookName = worksheet.Cells[i, 1]?.Value.ToString();
+                        }
+                        catch (Exception e)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 1]处格式错误: {e.Message}");
+                            continue;
+                        }
+                        if (s.Book.BookName == null)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 1]处格式错误: null");
+                            continue;
+                        }
+
+                        try
+                        {
+                            s.Book.Author = worksheet.Cells[i, 2]?.Value.ToString();
+                        }
+                        catch (Exception e)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 2]处格式错误: {e.Message}");
+                            continue;
+                        }
+                        if (s.Book.Author == null)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 2]处格式错误: null");
+                            continue;
+                        }
+
+                        try
+                        {
+                            s.Book.PublishingHouse = worksheet.Cells[i, 3]?.Value.ToString();
+                        }
+                        catch (Exception e)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 3]处格式错误: {e.Message}");
+                            continue;
+                        }
+                        if (s.Book.PublishingHouse == null)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 3]处格式错误: null");
+                            continue;
+                        }
+
+                        try
+                        {
+                            s.Book.PublicDate = DateTime.Parse(worksheet.Cells[i, 4]?.Value.ToString());
+                        }
+                        catch (Exception e)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 4]处格式错误: {e.Message}");
+                            continue;
+                        }
+
+                        try
+                        {
+                            string? ts = worksheet.Cells[i, 6]?.Value.ToString();
+                            if (ts.IsNullOrEmpty()) throw new ArgumentNullException($"null");
+                            switch(ts)
+                            {
+                                case "图书": s.Book.Type = 0; break;
+                                case "期刊": s.Book.Type = 1; break;
+                                case "报纸": s.Book.Type = 2; break;
+                                case "附书光盘": s.Book.Type = 3; break;
+                                case "非书资料": s.Book.Type = 4; break;
+                                default: throw new Exception("请输入\"图书、期刊、报纸、附书光盘、非书资料\"之一");
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 6]处格式错误: {e.Message}");
+                            continue;
+                        }
+
+                        try
+                        {
+                            s.Book.EndDate = DateTime.Parse(worksheet.Cells[i, 8]?.Value?.ToString());
+                        }
+                        catch (Exception)
+                        {
+                            s.Book.EndDate = null;
+                        }
+
+                    A:
+                        try
+                        {
+                            s.StoreNum = byte.Parse(worksheet.Cells[i, 7]?.Value.ToString());
+                            s.RemainNum = s.StoreNum;
+                        }
+                        catch (Exception e)
+                        {
+                            ModelState.AddModelError(string.Empty, $"[{i}, 7]处格式错误: {e.Message}");
+                            continue;
+                        }
+
+                        if (selectGroupView.IfConflict == 0)
+                        {
+                            oldBook = await GetBook(s.Book.BookSortCallNumber, s.Book.BookFormCallNumber);
+                            if (oldBook != null)
+                            {
+                                ModelState.AddModelError(string.Empty, $"第{i}行，中图法分类号和书次号冲突，不更新");
+                                continue;
+                            }
+                        }
+
+                        _context.Store.Add(s);
+                    }
+                    try { await _context.SaveChangesAsync(); }
+                    catch (DbUpdateConcurrencyException e)
+                    {
+                        ModelState.AddModelError(string.Empty, e.InnerException?.Message ?? e.Message);
+                        return Page();
                     }
                 }
             }
-            /*
-            _context.Store.Add(Store);
-            await _context.SaveChangesAsync();
-            */
             return Page();
-            //return RedirectToPage("./Index");
         }
 
         private async Task<Location?> GetLocation()
@@ -117,6 +252,14 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             var loc = await _context.Location.Where(l => l.LocationLevel == 4 &&
                 l.LocationId == selectGroupView.LayerId).FirstOrDefaultAsync();
             return loc;
+        }
+
+        private async Task<Book?> GetBook(string scn, string fcn)
+        {
+            if (_context.Book == null) return null;
+            var b = await _context.Book.Where(b => b.BookSortCallNumber == scn && b.BookFormCallNumber == fcn)
+                .FirstOrDefaultAsync();
+            return b;
         }
 
         private async Task InitSelectGrop()
