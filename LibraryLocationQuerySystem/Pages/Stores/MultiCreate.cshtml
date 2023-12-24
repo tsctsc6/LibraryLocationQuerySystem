@@ -1,0 +1,124 @@
+﻿@page
+@model LibraryLocationQuerySystem.Pages.Stores.MultiCreateModel
+
+@{
+    ViewData["Title"] = "MultiCreate";
+}
+
+<h1>MultiCreate</h1>
+
+<h4>Store</h4>
+
+<form enctype="multipart/form-data" method="post">
+    <div class="form-group">
+        <label class="control-label">校区</label>
+        <select asp-for="selectGroupView.CampusId" asp-items="Model.Campuses" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">图书馆/图书室</label>
+        <select asp-for="selectGroupView.LibraryId" asp-items="Model.Libraries" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">楼层</label>
+        <select asp-for="selectGroupView.FloorId" asp-items="Model.Floors" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">书架</label>
+        <select asp-for="selectGroupView.BookshelfId" asp-items="Model.Bookshelves" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">书架层</label>
+        <select asp-for="selectGroupView.LayerId" asp-items="Model.Layers" class="form-control"></select>
+    </div>
+    <dl>
+        <dt>
+            <label asp-for="FileUpload.FormFile"></label>
+        </dt>
+        <dd>
+            <input asp-for="FileUpload.FormFile" type="file" class="btn btn-lg btn-primary" />
+            <span asp-validation-for="FileUpload.FormFile" class="text-danger"></span>
+        </dd>
+    </dl>
+    <button id="multiRegisterSubmit" type="submit" class="btn btn-lg btn-primary">Upload</button>
+</form>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function OnCampusChange() {
+            var LocationId = $(this).val();
+            console.log(`Campus:${LocationId}`);
+            $("#selectGroupView_LibraryId").empty();
+            $("#selectGroupView_LibraryId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=1&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#selectGroupView_LibraryId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                    $("#selectGroupView_LibraryId").change();
+                });
+            }
+            else { $("#selectGroupView_LibraryId").change(); }
+        };
+
+        function OnLibraryChange() {
+            var LocationId = $(this).val();
+            console.log(`Library:${LocationId}`);
+            $("#selectGroupView_FloorId").empty();
+            $("#selectGroupView_FloorId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=2&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#selectGroupView_FloorId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                    $("#selectGroupView_FloorId").change();
+                });
+            }
+            else { $("#selectGroupView_FloorId").change(); }
+        };
+
+        function OnFloorChange() {
+            var LocationId = $(this).val();
+            console.log(`Floor:${LocationId}`);
+            $("#selectGroupView_BookshelfId").empty();
+            $("#selectGroupView_BookshelfId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=3&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#selectGroupView_BookshelfId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                    $("#selectGroupView_BookshelfId").change();
+                });
+            }
+            else { $("#selectGroupView_BookshelfId").change(); }
+        };
+
+        function OnBookshelfChange() {
+            var LocationId = $(this).val();
+            console.log(`Bookshelf:${LocationId}`);
+            $("#selectGroupView_LayerId").empty();
+            $("#selectGroupView_LayerId").append(`<option value="0">(未选择)</option>`);
+            if (LocationId != 0) {
+                $.getJSON(`?handler=Parent&LocationLevel=4&LocationParent=${LocationId}`, (data) => {
+                    $.each(data, function (i, item) {
+                        $("#selectGroupView_LayerId").append(`<option value="${item.locationId}">${item.locationName}</option>`);
+                    });
+                });
+            }
+        };
+
+        $(function () {
+            $("#selectGroupView_CampusId").on("change", OnCampusChange);
+            $("#selectGroupView_LibraryId").on("change", OnLibraryChange);
+            $("#selectGroupView_FloorId").on("change", OnFloorChange);
+            $("#selectGroupView_BookshelfId").on("change", OnBookshelfChange);
+        });
+    </script>
+}
