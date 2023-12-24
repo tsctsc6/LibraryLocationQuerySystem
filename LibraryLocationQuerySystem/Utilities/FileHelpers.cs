@@ -13,6 +13,16 @@ using Microsoft.Net.Http.Headers;
 
 namespace LibraryLocationQuerySystem.Utilities
 {
+    public class BufferedSingleFileUploadPhysical
+    {
+        [Required]
+        [Display(Name = "File")]
+        public IFormFile FormFile { get; set; }
+
+        [Display(Name = "Note")]
+        [StringLength(50, MinimumLength = 0)]
+        public string? Note { get; set; }
+    }
     public static class FileHelpers
     {
         // If you require a check on specific characters in the IsValidFileExtensionAndSignature
