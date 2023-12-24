@@ -117,7 +117,10 @@
                     @Html.DisplayFor(model => item.RemainNum)
                 </td>
             <td>
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @if (@User.IsInRole("admin"))
+                    {
+                        <a asp-page="Delete">Delete</a>
+                    }
             </td>
         </tr>
 }
