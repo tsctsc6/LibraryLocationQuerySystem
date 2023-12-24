@@ -13,6 +13,7 @@ using LibraryLocationQuerySystem.Utilities;
 using OfficeOpenXml;
 using Microsoft.IdentityModel.Tokens;
 using Humanizer.Bytes;
+using static LibraryLocationQuerySystem.Pages.Locations.CreateModel;
 
 namespace LibraryLocationQuerySystem.Pages.Stores
 {
@@ -119,10 +120,30 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                             continue;
                         }
 
-                        if (selectGroupView.IfConflict == 1)
+
+                        if (await _context.Store.Where(
+                            ss => ss.BookSortCallNumber == s.Book.BookSortCallNumber &&
+                            ss.BookFormCallNumber == s.Book.BookFormCallNumber &&
+                            ss.LocationLevel == s.Location.LocationLevel &&
+                            ss.LocationId == s.Location.LocationId).CountAsync() != 0)
                         {
-                            oldBook = await GetBook(s.Book.BookSortCallNumber, s.Book.BookFormCallNumber);
-                            if (oldBook != null) { s.Book = oldBook; goto A; }
+                            ModelState.AddModelError(string.Empty, $"第{i}行，该书已存在，不更新");
+                            if (selectGroupView.IfConflict != 2) continue;
+                        }
+                        oldBook = await GetBook(s.Book.BookSortCallNumber, s.Book.BookFormCallNumber);
+                        if (oldBook != null)
+                        {
+                            switch (selectGroupView.IfConflict)
+                            {
+                                case 0:
+                                    ModelState.AddModelError(string.Empty, $"第{i}行，中图法分类号和书次号冲突，不更新");
+                                    continue;
+                                case 1:
+                                    s.Book = oldBook;
+                                    goto A;
+                                case 2: break;
+                                default: break;
+                            }
                         }
 
                         try
@@ -209,6 +230,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                             s.Book.EndDate = null;
                         }
 
+                        if (selectGroupView.IfConflict == 2) _context.Attach(s.Book).State = EntityState.Modified;
                     A:
                         try
                         {
@@ -221,20 +243,10 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                             continue;
                         }
 
-                        if (selectGroupView.IfConflict == 0)
-                        {
-                            oldBook = await GetBook(s.Book.BookSortCallNumber, s.Book.BookFormCallNumber);
-                            if (oldBook != null)
-                            {
-                                ModelState.AddModelError(string.Empty, $"第{i}行，中图法分类号和书次号冲突，不更新");
-                                continue;
-                            }
-                        }
-
                         _context.Store.Add(s);
                     }
                     try { await _context.SaveChangesAsync(); }
-                    catch (DbUpdateConcurrencyException e)
+                    catch (DbUpdateException e)
                     {
                         ModelState.AddModelError(string.Empty, e.InnerException?.Message ?? e.Message);
                         return Page();
