@@ -41,7 +41,7 @@ namespace LibraryLocationQuerySystem.Pages.Books
 		[BindProperty(SupportsGet = true)]
 		public string? SearchString { get; set; }
 
-        public PageManager pm { get; private set; }
+        public PageManager pm { get; set; } = new() { NumPerPage = 20 };
         [BindProperty(SupportsGet = true)]
         [Range(0, int.MaxValue)]
         public int pageNum { get; set; } = 0;

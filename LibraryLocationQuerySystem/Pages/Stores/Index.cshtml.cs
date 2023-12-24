@@ -24,6 +24,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         public IndexModel(LibraryLocationQuerySystem.Data.StoreManagerDbContext context)
         {
             _context = context;
+            pm = new() { NumPerPage = 20 };
         }
 
         public class SearchOptionModel
@@ -68,8 +69,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         [BindProperty(SupportsGet = true)]
         public SearchOptionModel searchOption { get; set; } = new();
 
-        [BindProperty(SupportsGet = true)]
-        public PageManager pm { get; set; } = new() { NumPerPage = 20 };
+        public PageManager pm { get; private set; }
         [BindProperty(SupportsGet = true)]
         [Range(0, int.MaxValue)]
         public int pageNum { get; set; } = 0;
@@ -99,8 +99,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                               new { b.BookSortCallNumber, b.BookFormCallNumber } equals
                               new { s.BookSortCallNumber, s.BookFormCallNumber }
                               select s;
-            pm.NumPerPage = 20;
-            pm.Set(pageNum, await _context.Book.CountAsync());
+            pm.Set(pageNum, await _StoreList2.CountAsync());
             _StoreList2 = _StoreList2.Skip(pm.StartIndex).Take(pm.NumPerPage);
             StoreList = await _StoreList2.ToArrayAsync();
             _BookList = from b in _BookList

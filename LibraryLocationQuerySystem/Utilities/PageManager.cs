@@ -20,8 +20,9 @@ namespace LibraryLocationQuerySystem.Utilities
 			if (pageNum < 0) pageNum = 0;
 			StartIndex = pageNum * NumPerPage;
             ResNum = resNum;
-			                    //即将越界
-			NextPage = (NextPage < ResNum / NumPerPage) ? pageNum + 1 : ResNum / NumPerPage;
+            NextPage = pageNum + 1;
+            //即将越界
+            NextPage = (NextPage <= ResNum / NumPerPage) ? pageNum + 1 : ResNum / NumPerPage;
 		    //越界
 			if (ResNum <= StartIndex)
             {
