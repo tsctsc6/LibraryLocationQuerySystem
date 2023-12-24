@@ -55,9 +55,13 @@
         <select asp-for="searchOption.selectGroupView.LayerId" asp-items="Model.searchOption.Layers" class="form-control"></select>
     </div>
 </form>
-<p>
-    共 @Html.DisplayFor(model => model.pm.ResNum) 个结果，@Html.DisplayFor(model => model.pm.StartIndex)~@Html.DisplayFor(model => model.pm.EndIndex)
-</p>
+<div>
+    <form style="margin:0px; display:inline" class="form-inline" method="post">
+        共 @Html.DisplayFor(model => model.pm.ResNum) 个结果，@Html.DisplayFor(model => model.pm.StartIndex)~@Html.DisplayFor(model => model.pm.EndIndex)
+        <input type="submit" value="下载" />
+    </form>
+</div>
+
 
 <table class="table">
     <thead>

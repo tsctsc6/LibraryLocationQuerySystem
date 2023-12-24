@@ -14,6 +14,7 @@ using LibraryLocationQuerySystem.Utilities;
 using System.ComponentModel.DataAnnotations;
 using static LibraryLocationQuerySystem.Pages.Stores.IndexModel;
 using LibraryLocationQuerySystem.Pages.Locations;
+using OfficeOpenXml;
 
 namespace LibraryLocationQuerySystem.Pages.Stores
 {
@@ -79,6 +80,31 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             await InitSelectGrop();
             var _StoreList = StoreInLocation();
             if (_context.Book == null) return Page();
+            await Filter(_StoreList);
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            await InitSelectGrop();
+            var _StoreList = StoreInLocation();
+            if (_context.Book == null) return Page();
+            await Filter(_StoreList);
+            byte[] bytes;
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Test");
+                worksheet.Cells[1, 1].Value = "ID";
+                worksheet.Cells[1, 2].Value = "TestPointName";
+                worksheet.Cells[1, 3].Value = "TestValue";
+                bytes = package.GetAsByteArray();
+            }
+            Response.Headers.Add("Content-Disposition", "attachment; filename=SearchResult.xlsx");
+            return new FileContentResult(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+        private async Task Filter(IQueryable<Store> _StoreList)
+        {
             var _BookList = from b in _context.Book
                             join s in _StoreList on
                             new { b.BookSortCallNumber, b.BookFormCallNumber } equals
@@ -108,7 +134,6 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                         new { s.BookSortCallNumber, s.BookFormCallNumber }
                         select b;
             _ = await _BookList.ToListAsync();
-            return Page();
         }
 
         private IQueryable<Store>? StoreInLocation()
