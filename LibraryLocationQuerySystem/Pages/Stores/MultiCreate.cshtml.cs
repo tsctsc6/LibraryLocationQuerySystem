@@ -148,7 +148,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 
                         try
                         {
-                            s.Book.BookName = worksheet.Cells[i, 1]?.Value.ToString();
+                            s.Book.BookName = worksheet.Cells[i, 1]?.Value?.ToString();
                         }
                         catch (Exception e)
                         {
@@ -163,7 +163,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 
                         try
                         {
-                            s.Book.Author = worksheet.Cells[i, 2]?.Value.ToString();
+                            s.Book.Author = worksheet.Cells[i, 2]?.Value?.ToString();
                         }
                         catch (Exception e)
                         {
@@ -178,7 +178,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 
                         try
                         {
-                            s.Book.PublishingHouse = worksheet.Cells[i, 3]?.Value.ToString();
+                            s.Book.PublishingHouse = worksheet.Cells[i, 3]?.Value?.ToString();
                         }
                         catch (Exception e)
                         {
@@ -193,7 +193,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 
                         try
                         {
-                            s.Book.PublicDate = DateTime.Parse(worksheet.Cells[i, 4]?.Value.ToString());
+                            s.Book.PublicDate = DateTime.Parse(worksheet.Cells[i, 4]?.Value?.ToString());
                         }
                         catch (Exception e)
                         {
@@ -203,7 +203,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 
                         try
                         {
-                            string? ts = worksheet.Cells[i, 6]?.Value.ToString();
+                            string? ts = worksheet.Cells[i, 6]?.Value?.ToString();
                             if (ts.IsNullOrEmpty()) throw new ArgumentNullException($"null");
                             switch(ts)
                             {
@@ -234,7 +234,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                     A:
                         try
                         {
-                            s.StoreNum = byte.Parse(worksheet.Cells[i, 7]?.Value.ToString());
+                            s.StoreNum = byte.Parse(worksheet.Cells[i, 7]?.Value?.ToString());
                             s.RemainNum = s.StoreNum;
                         }
                         catch (Exception e)
