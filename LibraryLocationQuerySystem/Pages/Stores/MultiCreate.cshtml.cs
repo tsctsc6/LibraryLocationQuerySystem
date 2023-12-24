@@ -207,11 +207,11 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                             if (ts.IsNullOrEmpty()) throw new ArgumentNullException($"null");
                             switch(ts)
                             {
-                                case "图书": s.Book.Type = 0; break;
-                                case "期刊": s.Book.Type = 1; break;
-                                case "报纸": s.Book.Type = 2; break;
-                                case "附书光盘": s.Book.Type = 3; break;
-                                case "非书资料": s.Book.Type = 4; break;
+                                case "图书": s.Book.Type = BookType.图书; break;
+                                case "期刊": s.Book.Type = BookType.期刊; break;
+                                case "报纸": s.Book.Type = BookType.报纸; break;
+                                case "附书光盘": s.Book.Type = BookType.附书光盘; break;
+                                case "非书资料": s.Book.Type = BookType.非书资料; break;
                                 default: throw new Exception("请输入\"图书、期刊、报纸、附书光盘、非书资料\"之一");
                             }
                         }
