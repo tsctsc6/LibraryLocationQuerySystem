@@ -44,7 +44,8 @@ namespace LibraryLocationQuerySystem.Models
             }
             byte r2 = (byte)(r[0] & 0b0111);
             byte[] hashValue2 = hashValue.Skip(r2 * 4).Take(4).ToArray();
-            LocationId = hashValue2[0] << 24 | hashValue2[1] << 16 | hashValue2[2] << 8 | hashValue2[3] << 0;
+            if ((r[0] & 0b1000) == 0) LocationId = hashValue2[0] << 24 | hashValue2[1] << 16 | hashValue2[2] << 8 | hashValue2[3] << 0;
+            else LocationId = hashValue2[3] << 24 | hashValue2[2] << 16 | hashValue2[1] << 8 | hashValue2[0] << 0;
         }
     }
 }

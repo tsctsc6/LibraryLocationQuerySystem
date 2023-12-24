@@ -49,13 +49,20 @@ namespace LibraryLocationQuerySystem.Models
         public DateTime? EndDate { get; set; }
 
         [Required]
-        [Range(0, 4)]
         [Display(Name = "类型")]
-        public byte Type { get; set; }
+        public BookType Type { get; set; }
 
         [JsonIgnore]
         public List<Location> Locations { get; } = new();
         [JsonIgnore]
         public List<Store> Stores { get; } = new();
+    }
+    public enum BookType
+    {
+        图书,
+        期刊,
+        报纸,
+        附书光盘,
+        非书资料
     }
 }
