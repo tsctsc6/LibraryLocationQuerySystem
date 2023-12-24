@@ -68,5 +68,12 @@
 </div>
 <div>
     <h4>以下地点储藏了这本书</h4>
-    
+    <ul>
+        @foreach (var item in Model.LocationPaths)
+        {
+            <li>
+                @item
+            </li>
+        }
+    </ul>
 </div>
