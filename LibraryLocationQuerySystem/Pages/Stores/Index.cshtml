@@ -1,6 +1,7 @@
 ﻿@page
 @model LibraryLocationQuerySystem.Pages.Stores.IndexModel
-
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "reader")]
 @{
     ViewData["Title"] = "Index";
 }

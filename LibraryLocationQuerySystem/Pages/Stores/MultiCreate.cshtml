@@ -1,6 +1,7 @@
 ﻿@page
 @model LibraryLocationQuerySystem.Pages.Stores.MultiCreateModel
-
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "admin")]
 @{
     ViewData["Title"] = "MultiCreate";
 }
