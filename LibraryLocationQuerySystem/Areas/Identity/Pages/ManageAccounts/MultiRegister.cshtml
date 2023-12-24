@@ -8,6 +8,8 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
 <form enctype="multipart/form-data" method="post">
     <dl>
         <dt>
@@ -21,4 +23,4 @@
     <button id="multiRegisterSubmit" type="submit" class="btn btn-lg btn-primary">Upload</button>
 </form>
 
-<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
