@@ -15,6 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using static LibraryLocationQuerySystem.Pages.Stores.IndexModel;
 using LibraryLocationQuerySystem.Pages.Locations;
 using OfficeOpenXml;
+using System.Text;
 
 namespace LibraryLocationQuerySystem.Pages.Stores
 {
@@ -94,9 +95,27 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             using (var package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Test");
-                worksheet.Cells[1, 1].Value = "ID";
-                worksheet.Cells[1, 2].Value = "TestPointName";
-                worksheet.Cells[1, 3].Value = "TestValue";
+                worksheet.Cells[1, 1].Value = "书名";
+                worksheet.Cells[1, 2].Value = "作者";
+                worksheet.Cells[1, 3].Value = "出版社";
+                worksheet.Cells[1, 4].Value = "出版日期";
+                worksheet.Cells[1, 5].Value = "索取号";
+                worksheet.Cells[1, 6].Value = "类型";
+                worksheet.Cells[1, 7].Value = "结束出版日期";
+                worksheet.Cells[1, 8].Value = "存储地点";
+                int i = 2;
+                foreach (var s in StoreList)
+                {
+                    worksheet.Cells[i, 1].Value = s.Book.BookName;
+                    worksheet.Cells[i, 2].Value = s.Book.Author;
+                    worksheet.Cells[i, 3].Value = s.Book.PublishingHouse;
+                    worksheet.Cells[i, 4].Value = s.Book.PublicDate;
+                    worksheet.Cells[i, 5].Value = s.Book.BookSortCallNumber.TrimEnd() + "/" + s.Book.BookFormCallNumber.TrimEnd();
+                    worksheet.Cells[i, 6].Value = s.Book.Type;
+                    worksheet.Cells[i, 7].Value = s.Book.EndDate;
+                    worksheet.Cells[i, 8].Value = await SetLocationPath(s.LocationLevel, s.LocationId);
+                    i++;
+                }
                 bytes = package.GetAsByteArray();
             }
             Response.Headers.Add("Content-Disposition", "attachment; filename=SearchResult.xlsx");
@@ -222,6 +241,28 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 case 4: _loc_4 = _context.Location.Where(l => l.LocationLevel == 4 && l.LocationId == id); return _loc_4;
                 default: return _loc_4;
             }
+        }
+
+        private async Task<string> SetLocationPath(byte LocationLevel, int LocationId)
+        {
+            if (_context.Location == null) return string.Empty;
+            List<string> strings = new();
+            while (LocationLevel >= 0 && LocationLevel < 5)
+            {
+                var loc = await _context.Location.Where(l => l.LocationLevel == LocationLevel &&
+                    l.LocationId == LocationId).FirstOrDefaultAsync();
+                if (loc == null) throw new ArgumentNullException("Location元组not find");
+                LocationId = loc.LocationParent;
+                LocationLevel--;
+                strings.Insert(0, loc.LocationName);
+            }
+            StringBuilder sb = new("/ ");
+            foreach (var item in strings)
+            {
+                sb.Append(item);
+                sb.Append(" / ");
+            }
+            return sb.ToString();
         }
 
         private async Task InitSelectGrop()
