@@ -1,6 +1,8 @@
 ﻿@page
 @model LibraryLocationQuerySystem.Pages.Stores.IndexModel
 @using Microsoft.AspNetCore.Authorization
+@using LibraryLocationQuerySystem.Areas.Identity.Models
+@inject UserManager<StudentUser> UserManager
 @attribute [Authorize(Roles = "reader")]
 @{
     ViewData["Title"] = "Index";
@@ -8,9 +10,12 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a> | <a asp-page="MultiCreate">MultiCreate</a>
-</p>
+@if (@User.IsInRole("admin"))
+{
+    <p>
+        <a asp-page="Create">Create New</a> | <a asp-page="MultiCreate">MultiCreate</a>
+    </p>
+}
 
 <form method="get">
     <p>
