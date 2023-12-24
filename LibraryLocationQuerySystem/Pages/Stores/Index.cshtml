@@ -87,28 +87,28 @@
 @foreach (var item in Model.StoreList) {
         <tr>
                 <td>
-                    @Html.DisplayFor(model => model.StoreList[0].Book.BookSortCallNumber)
+                    @Html.DisplayFor(model => item.Book.BookSortCallNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.StoreList[0].Book.BookFormCallNumber)
+                    @Html.DisplayFor(model => item.Book.BookFormCallNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.StoreList[0].Book.BookName)
+                    @Html.DisplayFor(model => item.Book.BookName)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.StoreList[0].Book.Author)
+                    @Html.DisplayFor(model => item.Book.Author)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.StoreList[0].Book.PublishingHouse)
+                    @Html.DisplayFor(model => item.Book.PublishingHouse)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.StoreList[0].Book.Type)
+                    @Html.DisplayFor(model => item.Book.Type)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.StoreList[0].StoreNum)
+                    @Html.DisplayFor(model => item.StoreNum)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.StoreList[0].RemainNum)
+                    @Html.DisplayFor(model => item.RemainNum)
                 </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
