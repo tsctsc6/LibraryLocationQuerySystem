@@ -9,6 +9,8 @@
 
 <h4>Store</h4>
 
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
 <form enctype="multipart/form-data" method="post">
     <div class="form-group">
         <label class="control-label">校区</label>
@@ -29,6 +31,10 @@
     <div class="form-group">
         <label class="control-label">书架层</label>
         <select asp-for="selectGroupView.LayerId" asp-items="Model.Layers" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label class="control-label">如果中图法分类号和书次号冲突</label>
+        <select asp-for="selectGroupView.IfConflict" asp-items="Model.IfConflict" class="form-control"></select>
     </div>
     <dl>
         <dt>
