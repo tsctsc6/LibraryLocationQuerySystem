@@ -123,6 +123,10 @@
             <td>
                     @if (@User.IsInRole("admin"))
                     {
+                        <a asp-page="Edit" asp-route-bscn="@item.Book.BookSortCallNumber"
+                           asp-route-bfcn="@item.Book.BookFormCallNumber"
+                           asp-route-ll="@item.LocationLevel"
+                           asp-route-li="@item.LocationId">Edit</a>
                         <a asp-page="Delete" asp-route-bscn="@item.Book.BookSortCallNumber"
                            asp-route-bfcn="@item.Book.BookFormCallNumber"
                            asp-route-ll="@item.LocationLevel"
