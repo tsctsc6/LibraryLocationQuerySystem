@@ -99,7 +99,9 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                               new { b.BookSortCallNumber, b.BookFormCallNumber } equals
                               new { s.BookSortCallNumber, s.BookFormCallNumber }
                               select s;
-            StoreList = await _StoreList2.ToArrayAsync();
+            pm.NumPerPage = 20;
+            pm.Set(pageNum, await _context.Book.CountAsync());
+            StoreList = await _StoreList2.Skip(pm.StartIndex).Take(pm.NumPerPage).ToArrayAsync();
             _ = await _BookList.ToListAsync();
             return Page();
         }
