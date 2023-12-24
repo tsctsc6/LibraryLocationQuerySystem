@@ -77,94 +77,72 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         public async Task<IActionResult> OnGetAsync()
         {
             await InitSelectGrop();
-            await StoreInLocation();
+            var _StoreList = StoreInLocation();
             if (_context.Book == null) return Page();
-            foreach(var item in StoreList)
-            {
-                _ = await _context.Book.Where(b => b.BookSortCallNumber == item.BookSortCallNumber &&
-                    b.BookFormCallNumber == item.BookFormCallNumber).FirstOrDefaultAsync();
-            }
+            var _BookList = from b in _context.Book
+                            join s in _StoreList on
+                            new { b.BookSortCallNumber, b.BookFormCallNumber } equals
+                            new { s.BookSortCallNumber, s.BookFormCallNumber }
+                            select b;
             if (!string.IsNullOrEmpty(searchOption.SearchString))
             {
-                StoreList = StoreList.Where(b =>
+                _BookList = _BookList.Where(b =>
                     (searchOption.SearchBookBookSortCallNumber && b.BookSortCallNumber.Contains(searchOption.SearchString)) ||
                     (searchOption.SearchBookBookFormCallNumber && b.BookFormCallNumber.Contains(searchOption.SearchString)) ||
-                    (searchOption.SearchBookName && b.Book.BookName.Contains(searchOption.SearchString)) ||
-                    (searchOption.SearchPublishingHouse && b.Book.PublishingHouse.Contains(searchOption.SearchString)) ||
-                    (searchOption.SearchBookAuthor && b.Book.Author.Contains(searchOption.SearchString))
-                ).ToList();
+                    (searchOption.SearchBookName && b.BookName.Contains(searchOption.SearchString)) ||
+                    (searchOption.SearchPublishingHouse && b.PublishingHouse.Contains(searchOption.SearchString)) ||
+                    (searchOption.SearchBookAuthor && b.Author.Contains(searchOption.SearchString))
+                );
             }
+            var _StoreList2 = from b in _BookList
+                              join s in _StoreList on
+                              new { b.BookSortCallNumber, b.BookFormCallNumber } equals
+                              new { s.BookSortCallNumber, s.BookFormCallNumber }
+                              select s;
+            StoreList = await _StoreList2.ToArrayAsync();
+            _ = await _BookList.ToArrayAsync();
             return Page();
         }
 
-        private async Task StoreInLocation()
+        private IQueryable<Store>? StoreInLocation()
         {
-            if (_context.Location == null || _context.Book == null || _context.Store == null) return;
+            if (_context.Location == null || _context.Book == null || _context.Store == null) return null;
+            IQueryable<Store>? _StoreList = null;
             if (searchOption.selectGroupView.CampusId == 0)
             {
-                StoreList = await _context.Store.ToListAsync();
-                return;
+                _StoreList =  _context.Store;
+                return _StoreList;
             }
             IQueryable<Location>? LocationList = null;
             if (searchOption.selectGroupView.LibraryId == 0)
             {
-                var loc = await _context.Location.Where(l => l.LocationLevel == 0 &&
-                    l.LocationId == searchOption.selectGroupView.CampusId).FirstOrDefaultAsync();
                 LocationList = GetEndLocations(0, searchOption.selectGroupView.CampusId);
             }
             else if (searchOption.selectGroupView.FloorId == 0)
             {
-                var loc = await _context.Location.Where(l => l.LocationLevel == 1 &&
-                    l.LocationId == searchOption.selectGroupView.LibraryId).FirstOrDefaultAsync();
-                LocationList = await GetEndLocations(loc);
+                LocationList = GetEndLocations(1, searchOption.selectGroupView.LibraryId);
             }
             else if (searchOption.selectGroupView.BookshelfId == 0)
             {
-                var loc = await _context.Location.Where(l => l.LocationLevel == 2 &&
-                    l.LocationId == searchOption.selectGroupView.FloorId).FirstOrDefaultAsync();
-                LocationList = await GetEndLocations(loc);
+                LocationList = GetEndLocations(2, searchOption.selectGroupView.FloorId);
             }
             else if (searchOption.selectGroupView.LayerId == 0)
             {
-                var loc = await _context.Location.Where(l => l.LocationLevel == 3 &&
-                    l.LocationId == searchOption.selectGroupView.BookshelfId).FirstOrDefaultAsync();
-                LocationList = await GetEndLocations(loc);
+                LocationList = GetEndLocations(3, searchOption.selectGroupView.BookshelfId);
             }
             else
             {
-                var loc = await _context.Location.Where(l => l.LocationLevel == 4 &&
-                    l.LocationId == searchOption.selectGroupView.LayerId).FirstOrDefaultAsync();
-                LocationList = await GetEndLocations(loc);
+                LocationList = GetEndLocations(4, searchOption.selectGroupView.LayerId);
             }
-            StoreList = new List<Store>();
-            foreach (var item in LocationList)
-            {
-                if (_context.Store == null) throw new ArgumentNullException("_context.Store == null");
-                _ = await _context.Store.Where(s => s.LocationLevel == item.LocationLevel &&
-                        s.LocationId == item.LocationId).ToListAsync();
-                StoreList = StoreList.Concat(item.Stores).ToList();
-            }
+            if (LocationList == null) return null;
+            if (_context.Store == null) return null;
+            _StoreList = from l in LocationList
+                         join s in _context.Store on
+                         new { l.LocationLevel, l.LocationId } equals
+                         new { s.LocationLevel, s.LocationId }
+                         select s;
+            return _StoreList;
         }
-        /*
-        private async Task<List<Location>> GetEndLocations(Location? location)
-        {
-            List<Location> list = new();
-            if (location == null) return list;
-            if (location.LocationLevel == 4)
-            {
-                list.Add(location);
-                return list;
-            }
-            if (_context.Location == null) return list;
-            var _list = await _context.Location.Where(l => l.LocationLevel == location.LocationLevel + 1 &&
-                l.LocationParent == location.LocationId).ToListAsync();
-            foreach (var item in _list)
-            {
-                list = list.Concat(await GetEndLocations(item)).ToList();
-            }
-            return list;
-        }
-        */
         private IQueryable<Location>? GetEndLocations(byte level, int id)
         {
             if (_context.Location == null) return null;
