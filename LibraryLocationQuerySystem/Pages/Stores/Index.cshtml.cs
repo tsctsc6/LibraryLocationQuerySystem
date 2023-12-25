@@ -199,25 +199,22 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             if (_context.Location == null) return null;
             IQueryable<Location>? _loc = null;
             IQueryable<Location>? _loc_1 = null;
-            IQueryable<Location>? _loc_2 = null;
-            IQueryable<Location>? _loc_3 = null;
-            IQueryable<Location>? _loc_4 = null;
             /*
             if (level < 3)
             {
                 _loc_1 = _context.Location.Where(l => l.LocationLevel == level + 1 && l.LocationParent == id);
-                var loc_1 = _loc_1.ToArray();
+                Console.WriteLine($"MyGO!!!!!{level}, {_loc_1.Count()}");
                 while (level < 3)
                 {
                     _loc = _context.Location.Where(l => l.LocationLevel == level + 2);
-                    var loc = _loc.ToArray();
+                    Console.WriteLine($"BanG Dream {level}, {_loc.Count()}");
                     _loc_1 = from l in _loc
                              join l1 in _loc_1 on l.LocationParent equals l1.LocationId
                              select l;
-                    loc_1 = _loc_1.ToArray();
+                    Console.WriteLine($"MyGO!!!!!{level}, {_loc_1.Count()}");
                     level++;
                 }
-                
+                Console.WriteLine($"MyGO!!!!!{level}, {_loc_1.Count()}");
                 return _loc_1;
             }
             if (level == 3)
@@ -225,7 +222,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 _loc_1 = _context.Location.Where(l => l.LocationLevel == 4 && l.LocationParent == id);
                 return _loc_1;
             }
-            if (level == 3)
+            if (level == 4)
             {
                 _loc_1 = _context.Location.Where(l => l.LocationLevel == 4 && l.LocationId == id);
                 return _loc_1;
@@ -238,39 +235,39 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 case 0:
                     _loc_1 = _context.Location.Where(l => l.LocationLevel == 1 && l.LocationParent == id);
                     _loc = _context.Location.Where(l => l.LocationLevel == 2);
-                    _loc_2 = from l in _loc
+                    _loc_1 = from l in _loc
                              join l1 in _loc_1 on l.LocationParent equals l1.LocationId
                              select l;
                     _loc = _context.Location.Where(l => l.LocationLevel == 3);
-                    _loc_3 = from l in _loc
-                             join l2 in _loc_2 on l.LocationParent equals l2.LocationId
+                    _loc_1 = from l in _loc
+                             join l1 in _loc_1 on l.LocationParent equals l1.LocationId
                              select l;
                     _loc = _context.Location.Where(l => l.LocationLevel == 4);
-                    _loc_4 = from l in _loc
-                             join l3 in _loc_3 on l.LocationParent equals l3.LocationId
+                    _loc_1 = from l in _loc
+                             join l1 in _loc_1 on l.LocationParent equals l1.LocationId
                              select l;
-                    return _loc_4;
+                    return _loc_1;
                 case 1:
-                    _loc_2 = _context.Location.Where(l => l.LocationLevel == 2 && l.LocationParent == id);
+                    _loc_1 = _context.Location.Where(l => l.LocationLevel == 2 && l.LocationParent == id);
                     _loc = _context.Location.Where(l => l.LocationLevel == 3);
-                    _loc_3 = from l in _loc
-                             join l2 in _loc_2 on l.LocationParent equals l2.LocationId
+                    _loc_1 = from l in _loc
+                             join l1 in _loc_1 on l.LocationParent equals l1.LocationId
                              select l;
                     _loc = _context.Location.Where(l => l.LocationLevel == 4);
-                    _loc_4 = from l in _loc
-                             join l3 in _loc_3 on l.LocationParent equals l3.LocationId
+                    _loc_1 = from l in _loc
+                             join l1 in _loc_1 on l.LocationParent equals l1.LocationId
                              select l;
-                    return _loc_4;
+                    return _loc_1;
                 case 2: 
-                    _loc_3 = _context.Location.Where(l => l.LocationLevel == 3 && l.LocationParent == id);
+                    _loc_1 = _context.Location.Where(l => l.LocationLevel == 3 && l.LocationParent == id);
                     _loc = _context.Location.Where(l => l.LocationLevel == 4);
-                    _loc_4 = from l in _loc
-                             join l3 in _loc_3 on l.LocationParent equals l3.LocationId
+                    _loc_1 = from l in _loc
+                             join l1 in _loc_1 on l.LocationParent equals l1.LocationId
                              select l;
-                    return _loc_4;
-                case 3: _loc_4 = _context.Location.Where(l => l.LocationLevel == 4 && l.LocationParent == id); return _loc_4;
-                case 4: _loc_4 = _context.Location.Where(l => l.LocationLevel == 4 && l.LocationId == id); return _loc_4;
-                default: return _loc_4;
+                    return _loc_1;
+                case 3: _loc_1 = _context.Location.Where(l => l.LocationLevel == 4 && l.LocationParent == id); return _loc_1;
+                case 4: _loc_1 = _context.Location.Where(l => l.LocationLevel == 4 && l.LocationId == id); return _loc_1;
+                default: return _loc_1;
             }
             
         }
