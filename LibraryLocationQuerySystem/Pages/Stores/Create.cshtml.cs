@@ -92,7 +92,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 
             _context.Store.Add(Store);
             try { await _context.SaveChangesAsync(); }
-            catch (DbUpdateConcurrencyException e)
+            catch (DbUpdateException e)
             {
                 ModelState.AddModelError(string.Empty, e.InnerException?.Message??e.Message);
                 return Page();
