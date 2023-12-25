@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using LibraryLocationQuerySystem.Data;
 using LibraryLocationQuerySystem.Models;
 using LibraryLocationQuerySystem.Utilities;
+using System.Text;
 
 namespace LibraryLocationQuerySystem.Pages.Stores
 {
@@ -23,6 +24,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 
         [BindProperty]
         public Store Store { get; set; } = default!;
+        public string Path { get; set; } = string.Empty;
 
         public async Task<IActionResult> OnGetAsync(string? bscn, string? bfcn, byte? ll, int? li)
         {
@@ -38,6 +40,12 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 return NotFound();
             }
             Store = store;
+
+            _ = await _context.Book.FirstOrDefaultAsync(m => m.BookSortCallNumber == bscn &&
+                m.BookFormCallNumber == bfcn);
+            _ = await _context.Location.FirstOrDefaultAsync(m => m.LocationLevel == ll &&
+                m.LocationId == li);
+            Path = await SetLocationPath(store.LocationLevel, store.LocationId);
             return Page();
         }
 
@@ -77,6 +85,28 @@ namespace LibraryLocationQuerySystem.Pages.Stores
         private bool StoreExists(string id)
         {
           return (_context.Store?.Any(e => e.BookSortCallNumber == id)).GetValueOrDefault();
+        }
+
+        private async Task<string> SetLocationPath(byte LocationLevel, int LocationId)
+        {
+            if (_context.Location == null) return string.Empty;
+            List<string> strings = new();
+            while (LocationLevel >= 0 && LocationLevel < 5)
+            {
+                var loc = await _context.Location.Where(l => l.LocationLevel == LocationLevel &&
+                    l.LocationId == LocationId).FirstOrDefaultAsync();
+                if (loc == null) throw new ArgumentNullException("Location元组not find");
+                LocationId = loc.LocationParent;
+                LocationLevel--;
+                strings.Insert(0, loc.LocationName);
+            }
+            StringBuilder sb = new("/ ");
+            foreach (var item in strings)
+            {
+                sb.Append(item);
+                sb.Append(" / ");
+            }
+            return sb.ToString();
         }
     }
 }
