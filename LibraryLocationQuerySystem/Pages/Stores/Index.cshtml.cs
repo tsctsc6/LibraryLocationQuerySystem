@@ -202,6 +202,37 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             IQueryable<Location>? _loc_2 = null;
             IQueryable<Location>? _loc_3 = null;
             IQueryable<Location>? _loc_4 = null;
+            /*
+            if (level < 3)
+            {
+                _loc_1 = _context.Location.Where(l => l.LocationLevel == level + 1 && l.LocationParent == id);
+                var loc_1 = _loc_1.ToArray();
+                while (level < 3)
+                {
+                    _loc = _context.Location.Where(l => l.LocationLevel == level + 2);
+                    var loc = _loc.ToArray();
+                    _loc_1 = from l in _loc
+                             join l1 in _loc_1 on l.LocationParent equals l1.LocationId
+                             select l;
+                    loc_1 = _loc_1.ToArray();
+                    level++;
+                }
+                
+                return _loc_1;
+            }
+            if (level == 3)
+            {
+                _loc_1 = _context.Location.Where(l => l.LocationLevel == 4 && l.LocationParent == id);
+                return _loc_1;
+            }
+            if (level == 3)
+            {
+                _loc_1 = _context.Location.Where(l => l.LocationLevel == 4 && l.LocationId == id);
+                return _loc_1;
+            }
+            return _loc_1;
+            */
+            
             switch (level)
             {
                 case 0:
@@ -241,6 +272,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 case 4: _loc_4 = _context.Location.Where(l => l.LocationLevel == 4 && l.LocationId == id); return _loc_4;
                 default: return _loc_4;
             }
+            
         }
 
         private async Task<string> SetLocationPath(byte LocationLevel, int LocationId)
