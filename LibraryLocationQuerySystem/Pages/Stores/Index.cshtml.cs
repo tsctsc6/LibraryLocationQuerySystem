@@ -121,7 +121,11 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             Response.Headers.Add("Content-Disposition", "attachment; filename=SearchResult.xlsx");
             return new FileContentResult(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
-
+        /// <summary>
+        /// 搜索，并执行查询结果
+        /// </summary>
+        /// <param name="_StoreList"></param>
+        /// <returns></returns>
         private async Task Filter(IQueryable<Store> _StoreList)
         {
             var _BookList = from b in _context.Book
@@ -154,7 +158,10 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                         select b;
             _ = await _BookList.ToListAsync();
         }
-
+        /// <summary>
+        /// 根据Locations，找到对应的Stores
+        /// </summary>
+        /// <returns></returns>
         private IQueryable<Store>? StoreInLocation()
         {
             if (_context.Location == null || _context.Book == null || _context.Store == null) return null;
@@ -194,6 +201,12 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                          select s;
             return _StoreList;
         }
+        /// <summary>
+        /// 查找全部子节点的LocationId
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="id"></param>
+        /// <returns>查询对象</returns>
         private IQueryable<Location>? GetEndLocations(byte level, int id)
         {
             if (_context.Location == null) return null;
@@ -271,7 +284,13 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             }
             
         }
-
+        /// <summary>
+        /// 根据Location信息，生成路径信息
+        /// </summary>
+        /// <param name="LocationLevel"></param>
+        /// <param name="LocationId"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         private async Task<string> SetLocationPath(byte LocationLevel, int LocationId)
         {
             if (_context.Location == null) return string.Empty;
@@ -293,7 +312,10 @@ namespace LibraryLocationQuerySystem.Pages.Stores
             }
             return sb.ToString();
         }
-
+        /// <summary>
+        /// 初始化5个位置选择框和策略处理选择框
+        /// </summary>
+        /// <returns></returns>
         private async Task InitSelectGrop()
         {
             if (_context.Location == null) return;
@@ -318,6 +340,12 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 .Select(l => new SelectListItem(l.LocationName, l.LocationId.ToString())).ToListAsync();
             searchOption.Layers.Insert(0, new("(未选择)", "0"));
         }
+        /// <summary>
+        /// 查询Location下一级的子节点信息
+        /// </summary>
+        /// <param name="LocationLevel"></param>
+        /// <param name="LocationParent"></param>
+        /// <returns>json字符串</returns>
         public async Task<JsonResult> OnGetParentAsync(int LocationLevel, int LocationParent)
         {
             if (_context.Location == null) return new JsonResult("_context.Location == null");
