@@ -18,12 +18,10 @@ namespace LibraryLocationQuerySystem.Pages.Books
     public class CreateModel : PageModel
     {
         private readonly LibraryLocationQuerySystem.Data.StoreManagerDbContext _context;
-        private readonly UserManager<StudentUser> _userManager;
 
-        public CreateModel(LibraryLocationQuerySystem.Data.StoreManagerDbContext context, UserManager<StudentUser> userManager)
+        public CreateModel(LibraryLocationQuerySystem.Data.StoreManagerDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         public IActionResult OnGet()
