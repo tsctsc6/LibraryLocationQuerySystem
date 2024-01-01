@@ -16,6 +16,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Book.BookSortCallNumber" />
             <input type="hidden" asp-for="Book.BookFormCallNumber" />
+            <input type="hidden" asp-for="Book.ManageBy" />
             <div class="form-group">
                 <label asp-for="Book.BookSortCallNumber" class="control-label"></label>
                 <p>@Html.DisplayFor(model => model.Book.BookSortCallNumber)</p>
