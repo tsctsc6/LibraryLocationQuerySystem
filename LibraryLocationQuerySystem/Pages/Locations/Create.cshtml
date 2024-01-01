@@ -18,27 +18,45 @@
                 <select asp-for="selectGroupView.CampusId" asp-items="Model.Campuses" class="form-control"></select>
             </div>
             <div class="form-group">
+                <label asp-for="locationNames.CampusName" class="control-label"></label>
+                <input asp-for="locationNames.CampusName" class="form-control" />
+                <span asp-validation-for="locationNames.CampusName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label class="control-label">图书馆/图书室</label>
                 <select asp-for="selectGroupView.LibraryId" asp-items="Model.Libraries" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="locationNames.LibraryName" class="control-label"></label>
+                <input asp-for="locationNames.LibraryName" class="form-control" />
+                <span asp-validation-for="locationNames.LibraryName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">楼层</label>
                 <select asp-for="selectGroupView.FloorId" asp-items="Model.Floors" class="form-control"></select>
             </div>
             <div class="form-group">
+                <label asp-for="locationNames.FloorName" class="control-label"></label>
+                <input asp-for="locationNames.FloorName" class="form-control" />
+                <span asp-validation-for="locationNames.FloorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label class="control-label">书架</label>
                 <select asp-for="selectGroupView.BookshelfId" asp-items="Model.Bookshelves" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="locationNames.BookshelfName" class="control-label"></label>
+                <input asp-for="locationNames.BookshelfName" class="form-control" />
+                <span asp-validation-for="locationNames.BookshelfName" class="text-danger"></span>
             </div>
             <!--div class="form-group">
                 <label class="control-label">书架层</label>
                 <select asp-for="selectGroupView.LayerId" asp-items="Model.Layers" class="form-control"></select>
             </!--div-->
-            <input type="hidden" asp-for="Location.LocationId" value="0" class="form-control" />
-            <input type="hidden" asp-for="Location.ManageBy" value="0000000000" class="form-control" />
             <div class="form-group">
-                <label asp-for="Location.LocationName" class="control-label"></label>
-                <input asp-for="Location.LocationName" class="form-control" />
-                <span asp-validation-for="Location.LocationName" class="text-danger"></span>
+                <label asp-for="locationNames.LayerName" class="control-label"></label>
+                <input asp-for="locationNames.LayerName" class="form-control" />
+                <span asp-validation-for="locationNames.LayerName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
