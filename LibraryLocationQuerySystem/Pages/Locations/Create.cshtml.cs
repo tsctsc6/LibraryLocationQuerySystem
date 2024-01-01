@@ -76,21 +76,21 @@ namespace LibraryLocationQuerySystem.Pages.Locations
                 return Page();
             }
 
-            int index;
+            (int,int) index;
             try { index = await SetLocationLevelAndParent(); }
             catch (ArgumentNullException e)
             {
                 ModelState.AddModelError(string.Empty, e.Message);
                 return Page();
             }
-            while(index < Locations.Length)
+            while(index.Item1 < index.Item2)
             {
-                do { Locations[index].GenLocationid(); }
-                while (await _context.Location.Where(l => l.LocationId == Locations[index].LocationId).CountAsync() != 0 || Locations[index].LocationId == 0);
-                if (index > 0) Locations[index].LocationParent = Locations[index - 1].LocationId;
-                Locations[index].ManageBy = User?.Identity?.Name;
-                await _context.Location.AddAsync(Locations[index]);
-                index++;
+                do { Locations[index.Item1].GenLocationid(); }
+                while (await _context.Location.Where(l => l.LocationId == Locations[index.Item1].LocationId).CountAsync() != 0 || Locations[index.Item1].LocationId == 0);
+                if (index.Item1 > 0) Locations[index.Item1].LocationParent = Locations[index.Item1 - 1].LocationId;
+                Locations[index.Item1].ManageBy = User?.Identity?.Name;
+                await _context.Location.AddAsync(Locations[index.Item1]);
+                index.Item1++;
             }
 
 			try { await _context.SaveChangesAsync(); }
@@ -129,68 +129,73 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             */
         }
         
-        private async Task<int> SetLocationLevelAndParent()
+        private async Task<(int, int)> SetLocationLevelAndParent()
         {
-            int t = -1;
+            int start = -1;
+            int end = -1;
             if (selectGroupView.CampusId != 0)
             {
                 Locations[0] = await _context.Location.SingleAsync(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.CampusId);
             }
-            else
+            else if (locationNames.CampusName != null)
             {
                 Locations[0] = new();
                 Locations[0].LocationLevel = 0;
                 Locations[0].LocationParent = 0;
-                if (locationNames.CampusName == null) throw new ArgumentNullException("locationNames.CampusName == null");
                 Locations[0].LocationName = locationNames.CampusName;
-                if (t == -1) t = 0;
+                if (start == -1) start = 0;
             }
+            else throw new ArgumentNullException("locationNames.CampusName == null");
             if (selectGroupView.LibraryId != 0)
             {
-                Locations[1] = await _context.Location.SingleAsync(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.LibraryId);
+                Locations[1] = await _context.Location.SingleAsync(l => l.LocationLevel == 1 && l.LocationId == selectGroupView.LibraryId);
             }
-            else
+            else if (locationNames.LibraryName != null)
             {
                 Locations[1] = new();
                 Locations[1].LocationLevel = 1;
                 Locations[1].LocationParent = selectGroupView.CampusId;
-                if (locationNames.LibraryName == null) throw new ArgumentNullException("locationNames.LibraryName == null");
+                //if (locationNames.LibraryName == null) throw new ArgumentNullException("locationNames.LibraryName == null");
                 Locations[1].LocationName = locationNames.LibraryName;
-                if (t == -1) t = 1;
+                if (start == -1) start = 1;
             }
+            else return (start, 1);
             if (selectGroupView.FloorId != 0)
             {
-                Locations[2] = await _context.Location.SingleAsync(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.FloorId);
+                Locations[2] = await _context.Location.SingleAsync(l => l.LocationLevel == 2 && l.LocationId == selectGroupView.FloorId);
             }
-            else
+            else if (locationNames.FloorName != null)
             {
                 Locations[2] = new();
                 Locations[2].LocationLevel = 2;
                 Locations[2].LocationParent = selectGroupView.LibraryId;
-                if (locationNames.FloorName == null) throw new ArgumentNullException("locationNames.FloorName == null");
+                //if (locationNames.FloorName == null) throw new ArgumentNullException("locationNames.FloorName == null");
                 Locations[2].LocationName = locationNames.FloorName;
-                if (t == -1) t = 2;
+                if (start == -1) start = 2;
             }
+            else return (start, 2);
             if (selectGroupView.BookshelfId != 0)
             {
-                Locations[3] = await _context.Location.SingleAsync(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.BookshelfId);
+                Locations[3] = await _context.Location.SingleAsync(l => l.LocationLevel == 3 && l.LocationId == selectGroupView.BookshelfId);
             }
-            else
+            else if (locationNames.BookshelfName != null)
             {
                 Locations[3] = new();
                 Locations[3].LocationLevel = 3;
                 Locations[3].LocationParent = selectGroupView.FloorId;
-                if (locationNames.BookshelfName == null) throw new ArgumentNullException("locationNames.BookshelfName == null");
+                //if (locationNames.BookshelfName == null) throw new ArgumentNullException("locationNames.BookshelfName == null");
                 Locations[3].LocationName = locationNames.BookshelfName;
-                if (t == -1) t = 3;
+                if (start == -1) start = 3;
             }
+            else return (start, 3);
+
             Locations[4] = new();
             Locations[4].LocationLevel = 4;
             Locations[4].LocationParent = selectGroupView.BookshelfId;
-            if (locationNames.LayerName == null) throw new ArgumentNullException("locationNames.LayerName == null");
+            if (locationNames.LayerName == null) return (start, 4);
             Locations[4].LocationName = locationNames.LayerName;
-            if (t == -1) t = 4;
-            return t;
+            if (start == -1) start = 4;
+            return (start, 5);
         }
         
         public async Task<JsonResult> OnGetParentAsync(int LocationLevel, int LocationParent)
