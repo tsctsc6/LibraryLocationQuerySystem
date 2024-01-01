@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -51,6 +52,13 @@ namespace LibraryLocationQuerySystem.Models
         [Required]
         [Display(Name = "类型")]
         public BookType Type { get; set; }
+
+        [Column(TypeName = "char(10)")]
+        [MaxLength(10)]
+        [Required]
+        [RegularExpression(@"\d+")]
+        [JsonIgnore]
+        public string StudentId { get; set; }
 
         [JsonIgnore]
         public List<Location> Locations { get; } = new();

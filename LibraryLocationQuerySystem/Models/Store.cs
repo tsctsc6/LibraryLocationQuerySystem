@@ -30,6 +30,13 @@ namespace LibraryLocationQuerySystem.Models
 
         public byte RemainNum { get; set; }
 
+        [Column(TypeName = "char(10)")]
+        [MaxLength(10)]
+        [Required]
+        [RegularExpression(@"\d+")]
+        [JsonIgnore]
+        public string StudentId { get; set; }
+
         [JsonIgnore]
         public Book Book { get; set; } = null!;
         [JsonIgnore]

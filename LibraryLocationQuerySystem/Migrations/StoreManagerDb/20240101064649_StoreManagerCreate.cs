@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace LibraryLocationQuerySystem.Migrations
+namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
 {
     /// <inheritdoc />
     public partial class StoreManagerCreate : Migration
@@ -22,7 +22,8 @@ namespace LibraryLocationQuerySystem.Migrations
                     Author = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PublicDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Type = table.Column<byte>(type: "tinyint", nullable: false)
+                    Type = table.Column<byte>(type: "tinyint", nullable: false),
+                    StudentId = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,7 +37,8 @@ namespace LibraryLocationQuerySystem.Migrations
                     LocationLevel = table.Column<byte>(type: "tinyint", nullable: false),
                     LocationId = table.Column<int>(type: "int", nullable: false),
                     LocationParent = table.Column<int>(type: "int", nullable: false),
-                    LocationName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    LocationName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    StudentId = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,7 +55,8 @@ namespace LibraryLocationQuerySystem.Migrations
                     LocationId = table.Column<int>(type: "int", nullable: false),
                     StoreDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     StoreNum = table.Column<byte>(type: "tinyint", nullable: false),
-                    RemainNum = table.Column<byte>(type: "tinyint", nullable: false)
+                    RemainNum = table.Column<byte>(type: "tinyint", nullable: false),
+                    StudentId = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {

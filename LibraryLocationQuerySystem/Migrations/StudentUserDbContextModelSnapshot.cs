@@ -4,19 +4,16 @@ using LibraryLocationQuerySystem.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LibraryLocationQuerySystem.Migrations.StudentUserDb
+namespace LibraryLocationQuerySystem.Migrations
 {
     [DbContext(typeof(StudentUserDbContext))]
-    [Migration("20231224145101_StudentUserCreate")]
-    partial class StudentUserCreate
+    partial class StudentUserDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace LibraryLocationQuerySystem.Migrations.StudentUserDb
+namespace LibraryLocationQuerySystem.Migrations
 {
     /// <inheritdoc />
     public partial class StudentUserCreate : Migration

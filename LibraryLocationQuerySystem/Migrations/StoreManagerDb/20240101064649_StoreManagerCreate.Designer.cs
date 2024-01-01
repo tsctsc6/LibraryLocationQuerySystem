@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LibraryLocationQuerySystem.Migrations
+namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
 {
     [DbContext(typeof(StoreManagerDbContext))]
-    [Migration("20231224145030_StoreManagerCreate")]
+    [Migration("20240101064649_StoreManagerCreate")]
     partial class StoreManagerCreate
     {
         /// <inheritdoc />
@@ -56,6 +56,11 @@ namespace LibraryLocationQuerySystem.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("char(10)");
+
                     b.Property<byte>("Type")
                         .HasColumnType("tinyint");
 
@@ -81,6 +86,11 @@ namespace LibraryLocationQuerySystem.Migrations
 
                     b.Property<int>("LocationParent")
                         .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("char(10)");
 
                     b.HasKey("LocationLevel", "LocationId");
 
@@ -113,6 +123,11 @@ namespace LibraryLocationQuerySystem.Migrations
 
                     b.Property<byte>("StoreNum")
                         .HasColumnType("tinyint");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("char(10)");
 
                     b.HasKey("BookSortCallNumber", "BookFormCallNumber", "LocationLevel", "LocationId");
 

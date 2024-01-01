@@ -1,6 +1,8 @@
 ﻿using LibraryLocationQuerySystem.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -21,6 +23,13 @@ namespace LibraryLocationQuerySystem.Models
         [MaxLength(30)]
         [Display(Name = "位置名")]
         public string LocationName { get; set; }
+
+        [Column(TypeName = "char(10)")]
+        [MaxLength(10)]
+        [Required]
+        [RegularExpression(@"\d+")]
+        [JsonIgnore]
+        public string StudentId { get; set; }
 
         [JsonIgnore]
         public List<Book> Books { get; } = new();
