@@ -77,7 +77,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             }
 
             int index;
-            try { index = SetLocationLevelAndParent(); }
+            try { index = await SetLocationLevelAndParent(); }
             catch (ArgumentNullException e)
             {
                 ModelState.AddModelError(string.Empty, e.Message);
@@ -129,12 +129,12 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             */
         }
         
-        private int SetLocationLevelAndParent()
+        private async Task<int> SetLocationLevelAndParent()
         {
             int t = -1;
             if (selectGroupView.CampusId != 0)
             {
-                Locations[0] = _context.Location.Single(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.CampusId);
+                Locations[0] = await _context.Location.SingleAsync(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.CampusId);
             }
             else
             {
@@ -147,7 +147,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             }
             if (selectGroupView.LibraryId != 0)
             {
-                Locations[1] = _context.Location.Single(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.LibraryId);
+                Locations[1] = await _context.Location.SingleAsync(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.LibraryId);
             }
             else
             {
@@ -160,7 +160,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             }
             if (selectGroupView.FloorId != 0)
             {
-                Locations[2] = _context.Location.Single(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.FloorId);
+                Locations[2] = await _context.Location.SingleAsync(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.FloorId);
             }
             else
             {
@@ -173,7 +173,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             }
             if (selectGroupView.BookshelfId != 0)
             {
-                Locations[3] = _context.Location.Single(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.BookshelfId);
+                Locations[3] = await _context.Location.SingleAsync(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.BookshelfId);
             }
             else
             {
