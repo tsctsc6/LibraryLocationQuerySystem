@@ -1,6 +1,6 @@
 using Humanizer.Bytes;
 using LibraryLocationQuerySystem.Data;
-//using LibraryLocationQuerySystem.Migrations;
+using LibraryLocationQuerySystem.Migrations;
 using LibraryLocationQuerySystem.Models;
 using LibraryLocationQuerySystem.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +57,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             SetLocationLevelAndParent();
             do { Location.GenLocationid(); }
             while (await _context.Location.Where(l => l.LocationId == Location.LocationId).CountAsync() != 0 || Location.LocationId == 0);
+            Location.ManageBy = User?.Identity?.Name;
             await _context.Location.AddAsync(Location);
 			try { await _context.SaveChangesAsync(); }
 			catch (DbUpdateException e)

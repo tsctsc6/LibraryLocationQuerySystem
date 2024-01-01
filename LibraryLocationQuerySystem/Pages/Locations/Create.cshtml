@@ -34,6 +34,7 @@
                 <select asp-for="selectGroupView.LayerId" asp-items="Model.Layers" class="form-control"></select>
             </!--div-->
             <input type="hidden" asp-for="Location.LocationId" value="0" class="form-control" />
+            <input type="hidden" asp-for="Location.ManageBy" value="0000000000" class="form-control" />
             <div class="form-group">
                 <label asp-for="Location.LocationName" class="control-label"></label>
                 <input asp-for="Location.LocationName" class="form-control" />

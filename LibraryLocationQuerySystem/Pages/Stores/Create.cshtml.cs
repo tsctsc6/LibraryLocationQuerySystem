@@ -89,7 +89,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 
             Store.Location = loc;
             Store.RemainNum = Store.StoreNum;
-
+            Store.ManageBy = User?.Identity?.Name;
             _context.Store.Add(Store);
             try { await _context.SaveChangesAsync(); }
             catch (DbUpdateException e)
