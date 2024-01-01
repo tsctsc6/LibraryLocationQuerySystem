@@ -23,7 +23,7 @@ namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
                     PublicDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Type = table.Column<byte>(type: "tinyint", nullable: false),
-                    StudentId = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false)
+                    ManageBy = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,7 +38,7 @@ namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
                     LocationId = table.Column<int>(type: "int", nullable: false),
                     LocationParent = table.Column<int>(type: "int", nullable: false),
                     LocationName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    StudentId = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false)
+                    ManageBy = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,7 +56,7 @@ namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
                     StoreDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     StoreNum = table.Column<byte>(type: "tinyint", nullable: false),
                     RemainNum = table.Column<byte>(type: "tinyint", nullable: false),
-                    StudentId = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false)
+                    ManageBy = table.Column<string>(type: "char(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {

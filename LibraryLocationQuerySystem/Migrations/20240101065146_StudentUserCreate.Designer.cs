@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryLocationQuerySystem.Migrations
 {
     [DbContext(typeof(StudentUserDbContext))]
-    [Migration("20240101064626_StudentUserCreate")]
+    [Migration("20240101065146_StudentUserCreate")]
     partial class StudentUserCreate
     {
         /// <inheritdoc />

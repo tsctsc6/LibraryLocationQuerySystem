@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
 {
     [DbContext(typeof(StoreManagerDbContext))]
-    [Migration("20240101064649_StoreManagerCreate")]
+    [Migration("20240101065345_StoreManagerCreate")]
     partial class StoreManagerCreate
     {
         /// <inheritdoc />
@@ -48,6 +48,11 @@ namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ManageBy")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("char(10)");
+
                     b.Property<DateTime>("PublicDate")
                         .HasColumnType("datetime2");
 
@@ -55,11 +60,6 @@ namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("char(10)");
 
                     b.Property<byte>("Type")
                         .HasColumnType("tinyint");
@@ -87,7 +87,7 @@ namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
                     b.Property<int>("LocationParent")
                         .HasColumnType("int");
 
-                    b.Property<string>("StudentId")
+                    b.Property<string>("ManageBy")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("char(10)");
@@ -113,6 +113,11 @@ namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ManageBy")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("char(10)");
+
                     b.Property<byte>("RemainNum")
                         .HasColumnType("tinyint");
 
@@ -123,11 +128,6 @@ namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
 
                     b.Property<byte>("StoreNum")
                         .HasColumnType("tinyint");
-
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("char(10)");
 
                     b.HasKey("BookSortCallNumber", "BookFormCallNumber", "LocationLevel", "LocationId");
 

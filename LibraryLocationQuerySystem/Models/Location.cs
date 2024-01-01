@@ -29,7 +29,7 @@ namespace LibraryLocationQuerySystem.Models
         [Required]
         [RegularExpression(@"\d+")]
         [JsonIgnore]
-        public string StudentId { get; set; }
+        public string ManageBy { get; set; }
 
         [JsonIgnore]
         public List<Book> Books { get; } = new();
