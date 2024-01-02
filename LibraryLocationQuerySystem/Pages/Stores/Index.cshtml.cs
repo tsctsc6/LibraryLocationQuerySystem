@@ -110,9 +110,11 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                     worksheet.Cells[i, 2].Value = s.Book.Author;
                     worksheet.Cells[i, 3].Value = s.Book.PublishingHouse;
                     worksheet.Cells[i, 4].Value = s.Book.PublicDate;
+                    worksheet.Cells[i, 4].Style.Numberformat.Format = "yyyy/mm/dd";
                     worksheet.Cells[i, 5].Value = s.Book.BookSortCallNumber.TrimEnd() + "/" + s.Book.BookFormCallNumber.TrimEnd();
                     worksheet.Cells[i, 6].Value = s.Book.Type;
                     worksheet.Cells[i, 7].Value = s.Book.EndDate;
+                    worksheet.Cells[i, 7].Style.Numberformat.Format = "yyyy/mm/dd";
                     worksheet.Cells[i, 8].Value = await SetLocationPath(s.LocationLevel, s.LocationId);
                     i++;
                 }
