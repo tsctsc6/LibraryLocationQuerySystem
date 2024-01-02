@@ -132,7 +132,6 @@ namespace LibraryLocationQuerySystem.Pages.Locations
         private async Task<(int, int)> SetLocationLevelAndParent()
         {
             int start = -1;
-            int end = -1;
             if (selectGroupView.CampusId != 0)
             {
                 Locations[0] = await _context.Location.SingleAsync(l => l.LocationLevel == 0 && l.LocationId == selectGroupView.CampusId);
