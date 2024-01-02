@@ -151,7 +151,8 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                               new { s.BookSortCallNumber, s.BookFormCallNumber }
                               select s;
             pm.Set(pageNum, await _StoreList2.CountAsync());
-            _StoreList2 = _StoreList2.Skip(pm.StartIndex).Take(pm.NumPerPage);
+            _StoreList2 = _StoreList2.OrderBy(s => s.BookSortCallNumber + s.BookFormCallNumber + s.LocationLevel + s.LocationId)
+                .Skip(pm.StartIndex).Take(pm.NumPerPage);
             StoreList = await _StoreList2.ToArrayAsync();
             _BookList = from b in _BookList
                         join s in _StoreList2 on

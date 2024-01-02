@@ -72,7 +72,7 @@ namespace LibraryLocationQuerySystem.Pages.Books
 			}
 
 			pm.Set(pageNum, await _context.Book.CountAsync());
-            Book = await _Book.Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
+            Book = await _Book.OrderBy(b => b.BookSortCallNumber + b.BookFormCallNumber).Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
         }
     }
 }

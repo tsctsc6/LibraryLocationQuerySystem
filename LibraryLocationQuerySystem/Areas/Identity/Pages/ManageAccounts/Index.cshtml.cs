@@ -46,7 +46,7 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
 				_StudentUsers = _StudentUsers.Where(s => s.StudentId.Contains(SearchString));
 			}
 			pm.Set(pageNum, await _StudentUsers.CountAsync());
-			StudentUsers = await _StudentUsers.Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
+			StudentUsers = await _StudentUsers.OrderBy(s => s.StudentId).Skip(pm.StartIndex).Take(pm.NumPerPage).ToListAsync();
 		}
 	}
 }
