@@ -72,7 +72,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                 ModelState.AddModelError(string.Empty, "请输入完整地址");
                 return Page();
             }
-
+            Store.Book.ManageBy = User?.Identity?.Name;
             var oldBook = await GetBook();
             if (oldBook == null) _context.Book.Add(Store.Book);
             else

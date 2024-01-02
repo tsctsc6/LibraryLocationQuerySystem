@@ -101,6 +101,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                     {
                         Store s = new();
                         s.Book = new();
+                        s.Book.ManageBy = User?.Identity?.Name;
                         Book? oldBook = null;
                         s.Location = loc;
 
@@ -242,7 +243,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                             ModelState.AddModelError(string.Empty, $"[{i}, 7]处格式错误: {e.Message}");
                             continue;
                         }
-
+                        s.ManageBy = User?.Identity?.Name;
                         _context.Store.Add(s);
                     }
                     try { await _context.SaveChangesAsync(); }
@@ -253,7 +254,7 @@ namespace LibraryLocationQuerySystem.Pages.Stores
                     }
                 }
             }
-            return Page();
+            return RedirectToPage("./Index");
         }
 
         private async Task<Location?> GetLocation()
