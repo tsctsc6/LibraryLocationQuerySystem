@@ -3,7 +3,6 @@ using LibraryLocationQuerySystem.Areas.Identity.Models;
 using LibraryLocationQuerySystem.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OfficeOpenXml;
 
 namespace LibraryLocationQuerySystem
 {
@@ -11,7 +10,6 @@ namespace LibraryLocationQuerySystem
     {
         public static void Main(string[] args)
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
