@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using LibraryLocationQuerySystem.Data;
 using LibraryLocationQuerySystem.Models;
-using static LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts.MultiRegisterModel;
 using Microsoft.EntityFrameworkCore;
 using LibraryLocationQuerySystem.Utilities;
 using OfficeOpenXml;
 using Microsoft.IdentityModel.Tokens;
-using Humanizer.Bytes;
-using static LibraryLocationQuerySystem.Pages.Locations.CreateModel;
 
 namespace LibraryLocationQuerySystem.Pages.Stores
 {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LibraryLocationQuerySystem.Migrations.StoreManagerDb
 {
     /// <inheritdoc />
-    public partial class StoreManagerCreate : Migration
+    public partial class StoreManagerDbContext_InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

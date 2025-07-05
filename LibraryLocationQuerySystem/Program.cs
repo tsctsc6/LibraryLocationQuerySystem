@@ -8,7 +8,7 @@ namespace LibraryLocationQuerySystem
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +27,22 @@ namespace LibraryLocationQuerySystem
             builder.Services.AddDbContext<StoreManagerDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDbContext<StudentUserDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            {
+                options.UseSqlServer(connectionString);
+                options.UseAsyncSeeding(async (context, _, cancellationToken) =>
+                {
+                    if (context is not StudentUserDbContext studentUserDbContext) return;
+                    var any = await studentUserDbContext.Roles.AnyAsync(cancellationToken);
+                    if (!any)
+                    {
+                        await studentUserDbContext.Roles.AddRangeAsync(
+                            new IdentityRole("admin") { NormalizedName = "ADMIN" },
+                            new IdentityRole("reader") { NormalizedName = "READER" }
+                        );
+                    }
+                    await studentUserDbContext.SaveChangesAsync(cancellationToken);
+                });
+            });
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             var app = builder.Build();
@@ -35,13 +50,16 @@ namespace LibraryLocationQuerySystem
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                SeedData.Initialize(services);
+                await using var storeManagerDbContext = services.GetRequiredService<StoreManagerDbContext>();
+                await storeManagerDbContext.Database.MigrateAsync();
+                await using var studentUserDbContext = services.GetRequiredService<StudentUserDbContext>();
+                await studentUserDbContext.Database.MigrateAsync();
             }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseMigrationsEndPoint();
+                //app.UseMigrationsEndPoint();
             }
             else
             {

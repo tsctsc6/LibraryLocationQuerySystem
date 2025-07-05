@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace LibraryLocationQuerySystem.Utilities
+﻿namespace LibraryLocationQuerySystem.Utilities
 {
     /// <summary>
     /// 分页管理
