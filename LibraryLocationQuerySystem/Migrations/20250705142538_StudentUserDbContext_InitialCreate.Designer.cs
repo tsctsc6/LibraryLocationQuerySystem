@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryLocationQuerySystem.Migrations
 {
     [DbContext(typeof(StudentUserDbContext))]
-    [Migration("20240101065146_StudentUserCreate")]
-    partial class StudentUserCreate
+    [Migration("20250705142538_StudentUserDbContext_InitialCreate")]
+    partial class StudentUserDbContext_InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

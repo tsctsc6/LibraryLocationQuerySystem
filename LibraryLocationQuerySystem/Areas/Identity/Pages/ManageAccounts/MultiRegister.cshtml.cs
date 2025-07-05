@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
-using System.ComponentModel.DataAnnotations;
 
 namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
 {
@@ -71,7 +70,7 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
                     var worksheet = package.Workbook.Worksheets.FirstOrDefault();
                     if (worksheet == null)
                     {
-                        ModelState.AddModelError(string.Empty, "Õâ¸öÎÄ¼þÃ»ÓÐWorksheet");
+                        ModelState.AddModelError(string.Empty, "ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Ã»ï¿½ï¿½Worksheet");
                         return Page();
                     }
                     var maxAddress = worksheet.Dimension.Address.Split(":");

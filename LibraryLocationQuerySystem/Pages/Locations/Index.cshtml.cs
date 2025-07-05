@@ -1,8 +1,6 @@
 using LibraryLocationQuerySystem.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace LibraryLocationQuerySystem.Pages.Locations
@@ -60,7 +58,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 				LocationLevel--;
 				var loc = await _context.Location.Where(l => l.LocationLevel == LocationLevel &&
                     l.LocationId == LocationParentId).FirstOrDefaultAsync();
-                if (loc == null) throw new ArgumentNullException("LocationÔª×énot find");
+                if (loc == null) throw new ArgumentNullException("LocationÔªï¿½ï¿½not find");
                 LocationParentId = loc.LocationParent;
 				strings.Insert(0, loc.LocationName);
 			}

@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using LibraryLocationQuerySystem.Data;
 using LibraryLocationQuerySystem.Models;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using static LibraryLocationQuerySystem.Pages.Locations.CreateModel;
 using LibraryLocationQuerySystem.Utilities;
 using System.ComponentModel.DataAnnotations;
-using static LibraryLocationQuerySystem.Pages.Stores.IndexModel;
-using LibraryLocationQuerySystem.Pages.Locations;
 using OfficeOpenXml;
 using System.Text;
 
