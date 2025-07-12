@@ -1,4 +1,4 @@
-using LibraryLocationQuerySystem.Areas.Identity.Models;
+using LibraryLocationQuerySystem.Models;
 using LibraryLocationQuerySystem.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;

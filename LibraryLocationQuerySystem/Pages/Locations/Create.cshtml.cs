@@ -13,19 +13,19 @@ namespace LibraryLocationQuerySystem.Pages.Locations
         public class LocationNames
         {
             [StringLength(30)]
-            [Display(Name = "Ð£ÇøÃû")]
+            [Display(Name = "Ð£ï¿½ï¿½ï¿½ï¿½")]
             public string? CampusName { get; set; }
             [StringLength(30)]
-            [Display(Name = "Í¼Êé¹Ý/Í¼ÊéÊÒÃû")]
+            [Display(Name = "Í¼ï¿½ï¿½ï¿½/Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
             public string? LibraryName { get; set; }
             [StringLength(30)]
-            [Display(Name = "Â¥²ãÃû")]
+            [Display(Name = "Â¥ï¿½ï¿½ï¿½ï¿½")]
             public string? FloorName { get; set; }
             [StringLength(30)]
-            [Display(Name = "Êé¼ÜÃû")]
+            [Display(Name = "ï¿½ï¿½ï¿½ï¿½ï¿½")]
             public string? BookshelfName { get; set; }
             [StringLength(30)]
-            [Display(Name = "Êé¼Ü²ãÃû")]
+            [Display(Name = "ï¿½ï¿½Ü²ï¿½ï¿½ï¿½")]
             public string? LayerName { get; set; }
         }
 
@@ -38,7 +38,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
             //public int LayerId { get; set; }
         }
 
-        private readonly StoreManagerDbContext _context;
+        private readonly ApplicationDbContext _context;
 
 		[BindProperty(SupportsGet = true)]
 		public SelectGroupView selectGroupView { get; set; } = new();
@@ -52,7 +52,7 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 
         public Location[] Locations { get; } = new Location[5];
 
-        public CreateModel(StoreManagerDbContext context)
+        public CreateModel(ApplicationDbContext context)
 		{
 			_context = context;
 		}
@@ -104,23 +104,23 @@ namespace LibraryLocationQuerySystem.Pages.Locations
 
             Campuses = await _context.Location.Where(l => l.LocationLevel == 0)
                 .Select(l => new SelectListItem(l.LocationName, l.LocationId.ToString())).ToListAsync();
-            Campuses.Insert(0, new("(Î´Ñ¡Ôñ)", "0"));
+            Campuses.Insert(0, new("(Î´Ñ¡ï¿½ï¿½)", "0"));
 
             Libraries = await _context.Location.Where(l => l.LocationLevel == 1 && l.LocationParent == selectGroupView.CampusId)
                 .Select(l => new SelectListItem(l.LocationName, l.LocationId.ToString())).ToListAsync();
-            Libraries.Insert(0, new("(Î´Ñ¡Ôñ)", "0"));
+            Libraries.Insert(0, new("(Î´Ñ¡ï¿½ï¿½)", "0"));
 
             Floors = await _context.Location.Where(l => l.LocationLevel == 2 && l.LocationParent == selectGroupView.LibraryId)
                 .Select(l => new SelectListItem(l.LocationName, l.LocationId.ToString())).ToListAsync();
-            Floors.Insert(0, new("(Î´Ñ¡Ôñ)", "0"));
+            Floors.Insert(0, new("(Î´Ñ¡ï¿½ï¿½)", "0"));
 
             Bookshelves = await _context.Location.Where(l => l.LocationLevel == 3 && l.LocationParent == selectGroupView.FloorId)
                 .Select(l => new SelectListItem(l.LocationName, l.LocationId.ToString())).ToListAsync();
-            Bookshelves.Insert(0, new("(Î´Ñ¡Ôñ)", "0"));
+            Bookshelves.Insert(0, new("(Î´Ñ¡ï¿½ï¿½)", "0"));
             /*
             Layers = await _context.Location.Where(l => l.LocationLevel == 4 && l.LocationParent == selectGroupView.BookshelfId)
                 .Select(l => new SelectListItem(l.LocationName, l.LocationId.ToString())).ToListAsync();
-            Layers.Insert(0, new("(Î´Ñ¡Ôñ)", "0"));
+            Layers.Insert(0, new("(Î´Ñ¡ï¿½ï¿½)", "0"));
             */
         }
         

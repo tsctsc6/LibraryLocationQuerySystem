@@ -7,9 +7,9 @@ namespace LibraryLocationQuerySystem.Pages.Books
 {
     public class CreateModel : PageModel
     {
-        private readonly LibraryLocationQuerySystem.Data.StoreManagerDbContext _context;
+        private readonly LibraryLocationQuerySystem.Data.ApplicationDbContext _context;
 
-        public CreateModel(LibraryLocationQuerySystem.Data.StoreManagerDbContext context)
+        public CreateModel(LibraryLocationQuerySystem.Data.ApplicationDbContext context)
         {
             _context = context;
         }

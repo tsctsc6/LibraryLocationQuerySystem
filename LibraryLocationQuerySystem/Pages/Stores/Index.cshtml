@@ -1,7 +1,7 @@
 ﻿@page
 @model LibraryLocationQuerySystem.Pages.Stores.IndexModel
+@using LibraryLocationQuerySystem.Models
 @using Microsoft.AspNetCore.Authorization
-@using LibraryLocationQuerySystem.Areas.Identity.Models
 @inject UserManager<StudentUser> UserManager
 @attribute [Authorize(Roles = "reader")]
 @{

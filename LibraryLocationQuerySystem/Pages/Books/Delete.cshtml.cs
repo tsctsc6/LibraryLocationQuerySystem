@@ -7,9 +7,9 @@ namespace LibraryLocationQuerySystem.Pages.Books
 {
     public class DeleteModel : PageModel
     {
-        private readonly LibraryLocationQuerySystem.Data.StoreManagerDbContext _context;
+        private readonly LibraryLocationQuerySystem.Data.ApplicationDbContext _context;
 
-        public DeleteModel(LibraryLocationQuerySystem.Data.StoreManagerDbContext context)
+        public DeleteModel(LibraryLocationQuerySystem.Data.ApplicationDbContext context)
         {
             _context = context;
         }

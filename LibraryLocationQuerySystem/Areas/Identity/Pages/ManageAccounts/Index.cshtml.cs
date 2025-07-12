@@ -2,22 +2,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using LibraryLocationQuerySystem.Areas.Identity.Data;
-using LibraryLocationQuerySystem.Areas.Identity.Models;
+using LibraryLocationQuerySystem.Data;
+using LibraryLocationQuerySystem.Models;
 using LibraryLocationQuerySystem.Utilities;
 
 namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
 {
 	public class IndexModel : PageModel
 	{
-		private readonly StudentUserDbContext _context;
+		private readonly ApplicationDbContext _context;
 
         public PageManager pm { get; private set; }
         [BindProperty(SupportsGet = true)]
         [Range(0, int.MaxValue)]
         public int pageNum { get; set; } = 0;
 
-        public IndexModel(StudentUserDbContext context)
+        public IndexModel(ApplicationDbContext context)
 		{
 			_context = context;
 			pm = new() { NumPerPage = 20 };

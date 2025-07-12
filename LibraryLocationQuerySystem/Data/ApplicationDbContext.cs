@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using LibraryLocationQuerySystem.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace LibraryLocationQuerySystem.Data
 {
-    public class StoreManagerDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<StudentUser>
     {
-        public StoreManagerDbContext(DbContextOptions<StoreManagerDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
@@ -14,6 +15,7 @@ namespace LibraryLocationQuerySystem.Data
         public DbSet<Store> Store { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Book>().HasMany(e => e.Locations)
                 .WithMany(e => e.Books).UsingEntity<Store>(
                     l => l.HasOne(e => e.Location).WithMany(e => e.Stores)

@@ -11,9 +11,9 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 {
     public class MultiCreateModel : PageModel
     {
-        private readonly LibraryLocationQuerySystem.Data.StoreManagerDbContext _context;
+        private readonly LibraryLocationQuerySystem.Data.ApplicationDbContext _context;
 
-        public MultiCreateModel(LibraryLocationQuerySystem.Data.StoreManagerDbContext context)
+        public MultiCreateModel(LibraryLocationQuerySystem.Data.ApplicationDbContext context)
         {
             _context = context;
         }

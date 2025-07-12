@@ -10,7 +10,7 @@ namespace LibraryLocationQuerySystem.Pages.Books
 {
     public class IndexModel : PageModel
     {
-        private readonly LibraryLocationQuerySystem.Data.StoreManagerDbContext _context;
+        private readonly LibraryLocationQuerySystem.Data.ApplicationDbContext _context;
 
 		[BindProperty(SupportsGet = true)]
         [DisplayName("搜索中图法分类号")]
@@ -40,7 +40,7 @@ namespace LibraryLocationQuerySystem.Pages.Books
         [Range(0, int.MaxValue)]
         public int pageNum { get; set; } = 0;
 
-        public IndexModel(LibraryLocationQuerySystem.Data.StoreManagerDbContext context)
+        public IndexModel(LibraryLocationQuerySystem.Data.ApplicationDbContext context)
         {
             _context = context;
             pm = new() { NumPerPage = 20 };

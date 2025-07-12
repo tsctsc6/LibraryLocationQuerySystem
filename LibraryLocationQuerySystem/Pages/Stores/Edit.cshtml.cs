@@ -8,9 +8,9 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 {
     public class EditModel : PageModel
     {
-        private readonly LibraryLocationQuerySystem.Data.StoreManagerDbContext _context;
+        private readonly LibraryLocationQuerySystem.Data.ApplicationDbContext _context;
 
-        public EditModel(LibraryLocationQuerySystem.Data.StoreManagerDbContext context)
+        public EditModel(LibraryLocationQuerySystem.Data.ApplicationDbContext context)
         {
             _context = context;
         }

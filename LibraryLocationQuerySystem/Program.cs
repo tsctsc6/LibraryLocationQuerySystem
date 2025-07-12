@@ -1,6 +1,5 @@
-using LibraryLocationQuerySystem.Areas.Identity.Data;
-using LibraryLocationQuerySystem.Areas.Identity.Models;
 using LibraryLocationQuerySystem.Data;
+using LibraryLocationQuerySystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,28 +18,26 @@ namespace LibraryLocationQuerySystem
             {
                 options.SignIn.RequireConfirmedAccount = false;
             }).AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<StudentUserDbContext>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddSignInManager()
             .AddDefaultTokenProviders();
             builder.Services.AddRazorPages();
-
-            builder.Services.AddDbContext<StoreManagerDbContext>(options =>
-                options.UseSqlServer(connectionString));
-            builder.Services.AddDbContext<StudentUserDbContext>(options =>
+            
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(connectionString);
+                options.UseNpgsql(connectionString);
                 options.UseAsyncSeeding(async (context, _, cancellationToken) =>
                 {
-                    if (context is not StudentUserDbContext studentUserDbContext) return;
-                    var any = await studentUserDbContext.Roles.AnyAsync(cancellationToken);
+                    if (context is not ApplicationDbContext applicationDbContext) return;
+                    var any = await applicationDbContext.Roles.AnyAsync(cancellationToken);
                     if (!any)
                     {
-                        await studentUserDbContext.Roles.AddRangeAsync(
+                        await applicationDbContext.Roles.AddRangeAsync(
                             new IdentityRole("admin") { NormalizedName = "ADMIN" },
                             new IdentityRole("reader") { NormalizedName = "READER" }
                         );
                     }
-                    await studentUserDbContext.SaveChangesAsync(cancellationToken);
+                    await applicationDbContext.SaveChangesAsync(cancellationToken);
                 });
             });
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -50,10 +47,8 @@ namespace LibraryLocationQuerySystem
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                await using var storeManagerDbContext = services.GetRequiredService<StoreManagerDbContext>();
+                await using var storeManagerDbContext = services.GetRequiredService<ApplicationDbContext>();
                 await storeManagerDbContext.Database.MigrateAsync();
-                await using var studentUserDbContext = services.GetRequiredService<StudentUserDbContext>();
-                await studentUserDbContext.Database.MigrateAsync();
             }
 
             // Configure the HTTP request pipeline.

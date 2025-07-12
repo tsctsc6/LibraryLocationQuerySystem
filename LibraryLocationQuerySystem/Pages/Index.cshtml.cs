@@ -1,4 +1,4 @@
-﻿using LibraryLocationQuerySystem.Areas.Identity.Models;
+﻿using LibraryLocationQuerySystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

@@ -1,4 +1,4 @@
-using LibraryLocationQuerySystem.Areas.Identity.Models;
+using LibraryLocationQuerySystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -41,7 +41,7 @@ namespace LibraryLocationQuerySystem.Areas.Identity.Pages.ManageAccounts
             if (result.Succeeded)
             {
                 user.IsPasswordChanged = false;
-                ModelState.AddModelError(string.Empty, $"{StudentId} ÖØÖÃÃÜÂë³É¹¦");
+                ModelState.AddModelError(string.Empty, $"{StudentId} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½");
                 return Page();
             }
 

@@ -13,9 +13,9 @@ namespace LibraryLocationQuerySystem.Pages.Stores
 {
     public class IndexModel : PageModel
     {
-        private readonly LibraryLocationQuerySystem.Data.StoreManagerDbContext _context;
+        private readonly LibraryLocationQuerySystem.Data.ApplicationDbContext _context;
 
-        public IndexModel(LibraryLocationQuerySystem.Data.StoreManagerDbContext context)
+        public IndexModel(LibraryLocationQuerySystem.Data.ApplicationDbContext context)
         {
             _context = context;
             pm = new() { NumPerPage = 20 };
