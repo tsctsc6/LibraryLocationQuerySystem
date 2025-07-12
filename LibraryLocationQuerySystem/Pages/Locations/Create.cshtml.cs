@@ -13,19 +13,19 @@ namespace LibraryLocationQuerySystem.Pages.Locations
         public class LocationNames
         {
             [StringLength(30)]
-            [Display(Name = "У����")]
+            [Display(Name = "校区名称")]
             public string? CampusName { get; set; }
             [StringLength(30)]
-            [Display(Name = "ͼ���/ͼ������")]
+            [Display(Name = "图书馆名称")]
             public string? LibraryName { get; set; }
             [StringLength(30)]
-            [Display(Name = "¥����")]
+            [Display(Name = "楼层")]
             public string? FloorName { get; set; }
             [StringLength(30)]
-            [Display(Name = "�����")]
+            [Display(Name = "书架")]
             public string? BookshelfName { get; set; }
             [StringLength(30)]
-            [Display(Name = "��ܲ���")]
+            [Display(Name = "书架层")]
             public string? LayerName { get; set; }
         }
 

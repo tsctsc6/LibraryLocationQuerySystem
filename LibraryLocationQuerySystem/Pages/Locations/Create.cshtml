@@ -73,7 +73,7 @@
             var LocationId = $(this).val();
             console.log(`Campus:${LocationId}`);
             $("#selectGroupView_LibraryId").empty();
-            $("#selectGroupView_LibraryId").append(`<option value="0">(未选择)</option>`);
+            $("#selectGroupView_LibraryId").append(`<option value="0">(Not selected)</option>`);
             if (LocationId != 0){
                 $.getJSON(`?handler=Parent&LocationLevel=1&LocationParent=${LocationId}`, (data) => {
                     $.each(data, function (i, item) {
@@ -89,7 +89,7 @@
             var LocationId = $(this).val();
             console.log(`Library:${LocationId}`);
             $("#selectGroupView_FloorId").empty();
-            $("#selectGroupView_FloorId").append(`<option value="0">(未选择)</option>`);
+            $("#selectGroupView_FloorId").append(`<option value="0">(Not selected)</option>`);
             if (LocationId != 0) {
                 $.getJSON(`?handler=Parent&LocationLevel=2&LocationParent=${LocationId}`, (data) => {
                     $.each(data, function (i, item) {
@@ -105,7 +105,7 @@
             var LocationId = $(this).val();
             console.log(`Floor:${LocationId}`);
             $("#selectGroupView_BookshelfId").empty();
-            $("#selectGroupView_BookshelfId").append(`<option value="0">(未选择)</option>`);
+            $("#selectGroupView_BookshelfId").append(`<option value="0">(Not selected)</option>`);
             if (LocationId != 0) {
                 $.getJSON(`?handler=Parent&LocationLevel=3&LocationParent=${LocationId}`, (data) => {
                     $.each(data, function (i, item) {
@@ -121,6 +121,9 @@
             $("#selectGroupView_CampusId").on("change", OnCampusChange);
             $("#selectGroupView_LibraryId").on("change", OnLibraryChange);
             $("#selectGroupView_FloorId").on("change", OnFloorChange);
+            $("#selectGroupView_CampusId").append(`<option value="0">(Not selected)</option>`);
+            $("#selectGroupView_CampusId").select(1);
+            $("#selectGroupView_CampusId").change();
         });
     </script>
 }
