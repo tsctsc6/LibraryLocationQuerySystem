@@ -1,0 +1,110 @@
+name: Publish Application
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-desktop:
+    strategy:
+      matrix:
+        rid:
+          - win-x64
+          - linux-x64
+
+    runs-on: ${{ startsWith(matrix.rid, 'win-') && 'windows-latest' || startsWith(matrix.rid, 'osx-') && 'macos-latest' || 'ubuntu-latest' }}
+    timeout-minutes: 10
+
+    permissions:
+      actions: write
+      contents: read
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Publish application
+      run: |
+        dotnet workload restore ./LibraryLocationQuerySystem/LibraryLocationQuerySystem.csproj
+        dotnet publish ./LibraryLocationQuerySystem/LibraryLocationQuerySystem.csproj --configuration Release --runtime ${{ matrix.rid }} --output ./publish
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-${{ matrix.rid }}
+        path: |
+          ./publish
+          !./publish/**/*.pdb
+          !./publish/**/*.dbg
+        if-no-files-found: error
+
+  release1:
+    needs:
+      - build-desktop
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Create release
+      env:
+        GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+      run: >
+        gh release create v${{ vars.RELEASE_VERSION }}
+        --repo ${{ github.event.repository.full_name }}
+        --title v${{ vars.RELEASE_VERSION }}
+        --generate-notes
+
+  release2:
+    needs:
+      - release1
+
+    strategy:
+      matrix:
+        rid:
+          - win-x64
+          - linux-x64
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      actions: read
+      contents: write
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-${{ matrix.rid }}
+        path: release/
+    
+    - name: Set permissions
+      if: ${{ !startsWith(matrix.rid, 'win-') }}
+      run: |
+        if [ -f release/LibraryLocationQuerySystem ]; then
+            chmod +x release/LibraryLocationQuerySystem
+        fi
+        
+        if [ -f release/LibraryLocationQuerySystem.app/Contents/MacOS/LibraryLocationQuerySystem ]; then
+            chmod +x release/LibraryLocationQuerySystem.app/Contents/MacOS/LibraryLocationQuerySystem
+        fi
+
+    - name: Create package
+      # Change into the artifacts directory to avoid including the directory itself in the zip archive
+      working-directory: release/
+      run: zip -r ../PwdGen-${{ matrix.rid }}-v${{ vars.RELEASE_VERSION }}.zip .
+
+    - name: Upload release asset
+      env:
+        GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+      run: >
+        gh release upload v${{ vars.RELEASE_VERSION }}
+        PwdGen-${{ matrix.rid }}-v${{ vars.RELEASE_VERSION }}.zip
+        --repo ${{ github.event.repository.full_name }}
